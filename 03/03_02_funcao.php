@@ -1,4 +1,5 @@
 <?php
+ini_set('error_reporting',E_ALL);//lembrar php.ini
 function dizerOla($pessoa)
 {
     echo "Olá $pessoa.\n\n";
@@ -43,6 +44,10 @@ function salarioAnual(float $salarioMensal)
 }
 // A linha abaixo dará um erro fatal, pois é passada uma string.
 // salarioAnual('bug bug bug');
+$salarioMensal = 1000;
+$salario =salarioAnual($salarioMensal);
+echo "salario Mensal: $salarioMensal\n";
+
 
 // Quantidade variável de argumentos
 // A partir do PHP 5.6, ou seja, basicamente a partir do PHP 7

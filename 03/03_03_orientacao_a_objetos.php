@@ -1,11 +1,15 @@
 <?php
+namespace AulaDePhp\Aula3\Classes;
+ini_set('error_reporting',E_ALL);//lembrar php.ini
+
+
 class Pessoa
 {
     const TIPO = 'cientista';
 
     public $nome = 'Sem nome'; // não é usado no exemplo
 
-    public function __construct($nome = 'Linus Torvalds')
+    public function __construct($nome = 'Linus Torvalds') //construtor underlineunderline são reservadas
     {
         $this->nome = $nome;
     }
@@ -16,12 +20,12 @@ class Pessoa
     }
 }
 
-$minhaConexao = new Pessoa();
-$minhaConexao->falar();
-$minhaConexao->nome = 'Andrew Tanenbaum'; // pesquisador de SOs
-$minhaConexao->falar();
-$minhaConexao = new Pessoa('Dennis Ritchie'); // inventor do C
-$minhaConexao->falar();
+$pessoa = new Pessoa();
+$pessoa->falar();
+$pessoa->nome = 'Andrew Tanenbaum'; // pesquisador de SOs
+$pessoa->falar();
+$pessoa = new Pessoa('Dennis Ritchie'); // inventor do C
+$pessoa->falar();
 echo "\n";
 
 class Visibilidade
@@ -44,7 +48,7 @@ class Visibilidade
 
 // Fora da classe, só pode ser acessado o que é público.
 $minhaVisibilidade = new Visibilidade();
-echo "$minhaVisibilidade->publica\n";
+echo "$minhaVisibilidade->publica\n"; //imprimindo o que tem na variavel publica
 echo $minhaVisibilidade->metodoPublico();
 echo "\n";
 
