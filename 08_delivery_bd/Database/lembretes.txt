@@ -1,0 +1,11 @@
+mysql -u root -p
+
+show databases;
+
+create database ***nome*** collate utf8mb4_unicode_ci;
+
+use ***nome***;
+
+show tables;
+
+exit;

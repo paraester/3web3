@@ -23,11 +23,11 @@ class Mensagem
     }
     public function getEmail()
     {
-        return $this->$email;
+        return $this->email;
     }
     public function getTelefone()
     {
-        return $this->$telefone;
+        return $this->telefone;
     }
     public function getConteudo()
     {

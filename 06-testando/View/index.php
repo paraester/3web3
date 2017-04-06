@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CONTATO FORMULÁRIO RÁPIDO</title>
+    <title>CONTATO RÁPIDO</title>
     <style type="text/css">
         .negrito { font-weight: bold; }
     </style>
@@ -31,7 +31,7 @@
                 </tr>
             <tr>
                 <td align="left"><label>Mensagem:</label>
-                    <textarea id="conteudo"  name="conteudo" placeholder="Message......." required></textarea>
+                    <textarea id="conteudo" name="conteudo" placeholder="Message......." required></textarea>
                 </td>
             </tr>
             <tr>
@@ -45,12 +45,13 @@
     <h1>CONTATOS SALVOS</h1>
 <?php foreach ($mensagens as $mensagem) : ?>
     <p>
-        <span class="negrito"><?= $mensagem->getUsuario() ?></span>:
-        <?= $mensagem->getConteudo() ?>
-        <br>
+        <span class="negrito">Usuário: <?= $mensagem->getUsuario() ?></span>
+        <br>Email:
         <?= $mensagem->getEmail() ?>
-        <br>
+        <br>Telefone:
         <?= $mensagem->getTelefone() ?>
+        <br>Conteúdo da mensagem: 
+        <?= $mensagem->getConteudo() ?>
     </p>
 <?php endforeach ?>
 </body>
