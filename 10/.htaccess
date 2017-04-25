@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Se não for para a pasta pública, executa o index.php
+    RewriteCond %{REQUEST_FILENAME} !10/Public/
+    RewriteRule ^ index.php
+</IfModule>

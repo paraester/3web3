@@ -1,0 +1,65 @@
+<?
+include '../conectbd.php';
+$Semana_Escolhida = 2; //eh relativo ao mes para o relatorio
+$Ano_Escolhida = 2013;
+require_once ("./jpgraph/jpgraph.php");
+  require_once ("./jpgraph/jpgraph_bar.php");
+ 
+  
+//$conn = mysql_connect('localhost','ester','@nrgcelepar') or die('Erro na Conexao');
+//$db = mysql_select_db('phpcele',$conn) or die('Erro ao Selecionar Banco');
+?>
+	<? 
+	$sqlPesquisa = "SELECT regional, count(*) as total FROM `girpesquisaresposta` WHERE Semana LIKE $Semana_Escolhida AND Ano LIKE $Ano_Escolhida GROUP BY regional ORDER BY regional";
+	$resultado = mysql_query($sqlPesquisa) or die("Falha no comando sqlPesquisa");
+	  $datay=array(); // array com os dado do Eixo Y
+	  $datax=array(); // array com os dado do Eixo X
+	  $i=0;
+	  if (mysql_num_rows($resultado)){
+	while($campo = mysql_fetch_array($resultado)) {
+  
+  //Retornando os dados e armazenado nos arrays.
+  $datay[$i] = $campo['regional'];   //dados Eixo Y
+  $datax[$i] = $campo['total'];  //dados Eixo X
+  $i++;
+	?>
+
+<? }}
+// content="text/plain; charset=utf-8"
+
+
+//$datay=array(47,80,40,116);
+//$datax=array(61,30,82,105);
+
+
+// Create the graph. These two calls are always required
+$graph = new Graph(350,200,'auto');
+$graph->SetScale("textlin");
+
+//$graph->SetBox(false);
+
+$graph->xaxis->SetTickLabels(array('1','2','3','4', '5', '6', '7', '8', '9', '10', '11'));
+
+
+// Create the bar plots
+$b1plot = new BarPlot($datay);
+$b2plot = new BarPlot($datax);
+
+// Create the grouped bar plot
+$gbplot = new GroupBarPlot(array($b1plot,$b2plot));
+// ...and add it to the graPH
+$graph->Add($gbplot);
+
+
+$b1plot->SetColor("white");
+$b1plot->SetFillColor("#cc1111");
+
+$b2plot->SetColor("white");
+$b2plot->SetFillColor("#11cccc");
+
+
+$graph->title->Set("Bar Plots");
+
+// Display the graph
+$graph->Stroke();
+?>

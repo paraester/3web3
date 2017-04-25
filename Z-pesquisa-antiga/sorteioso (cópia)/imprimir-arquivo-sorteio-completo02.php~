@@ -1,0 +1,430 @@
+<?
+/*SEMANA PARA PESQUISAR
+id's editados (que ja responderam a pesquisa) possuem valor 1
+Este arquivo mostra a lista dos dados de soc existentes no bd da semana anterior, mostrando uma coluna que permite editar a linha que levara ao arquivo ./editar-preencher-resposta-salvar-satisf.php
+não mostra as ordens de serviço do nr que o tecnico adm pertence.
+ fixa as o.s. que farão parte da pesquisa para determinada semana (semana anterior cuja pesquisa se faz na semana atual)
+ nao considera mesmo numero de o.s. para o mesmo técnico.
+ 1- distintos    2- sorteio
+*/
+include '../conectbd.php';
+$Semana_Atual = date("W"); //pegar semana atual
+include './Semana_Atual.php';
+//$Semana_Anterior = $Semana_Atual-1; //echo $Semana_Anterior;
+//$Ano_Atual = date("Y");
+$id=&$_GET['a'];
+$arquivo = "ADM-ver-soc-semanas-anteriores.php"; // COLOQUE AQUI O NOME DADO A ESTE ARQUIVO
+
+
+$SQLID = "SELECT *, date_format( datafim, '%d/%m/%Y' ) as dataabertura FROM sorteioso WHERE 
+WEEK(datafim)='" . $Semana_Anterior . "' AND YEAR(datafim)='" . $Ano_Atual . "' ORDER BY executor"; // AND NOT executor LIKE '%" . $CidadeTecLogado . "%'
+$res_01 = mysql_query($SQLID) or die("Falha no comando sql linha 48"); 
+//$consulta = mysql_fetch_array($res_01);
+$totreg = mysql_num_rows($res_01);
+
+
+$arquivo = 'MODELO PLANILHA IMPORTAR CIDADÃO.xls';
+header ("Expires: Mon, 26 Jul 2015 05:00:00 GMT");
+
+header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+
+header ("Cache-Control: no-cache, must-revalidate");
+
+header ("Pragma: no-cache");
+
+header ("Content-type: application/x-msexcel");
+
+header ("Content-Disposition: attachment; filename=\"{$arquivo}\"" );
+
+header ("Content-Description: PHP Generated Data" );
+?>
+<table align="right"  border="0" bordercolor="#ffffff" cellpadding="0" cellspacing="0" width="99%">
+	<tr>
+	<td>
+	<table border="0" bordercolor="#C0C0C0"  cellpadding="5" cellspacing="0" width="100%" height="20" >
+		<tr>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:10pt"><b>CONTATO</b></FONT></CENTER>
+			</td>
+			<td height="20" class="titulos">
+				<CENTER><FONT STYLE="font-size:10pt"><b>ENDERECO</b></FONT></CENTER>
+			</td>
+			<td height="20" class="titulos">
+				<CENTER><FONT STYLE="font-size:10pt"><b>NUMERO</b></FONT></CENTER>
+			</td>
+			<td height="20" class="titulos">
+				<CENTER><FONT STYLE="font-size:10pt"><b>COMPLEMENTO</b></FONT></CENTER>
+			</td>
+			<td height="20" class="titulos">
+				<CENTER><FONT STYLE="font-size:10pt"><b>BAIRRO</b></FONT></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:10pt"><b>CIDADE&nbsp;</b></font></CENTER>
+			</td>
+			<td height="20" class="titulos">
+				<CENTER><FONT STYLE="font-size:10pt"><b>ESTADO</b></FONT></CENTER>
+			</td>
+			<td height="20" class="titulos">
+				<CENTER><FONT STYLE="font-size:10pt"><b>CEP</b></FONT></CENTER>
+			</td>
+			<td height="20" class="titulos">
+				<CENTER><FONT STYLE="font-size:10pt"><b>SEXO</b></FONT></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:10pt"><b>DATA DE NASCIMENTO&nbsp;</b></font></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:10pt"><b>ESTADO CIVIL&nbsp;</b></font></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:10pt"><b>TELEFONE RESIDENCIAL</b></FONT></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:10pt"><b>TELEFONE COMERCIAL</b></FONT></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:10pt"><b>TELEFONE CELULAR</b></FONT></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:10pt"><b>EMAIL</b></FONT></CENTER>
+			</td>
+<?/*
+
+
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:10pt"><b><?echo utf8_decode("ORDEM DE SERVIÇO");?></b></FONT></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:10pt"><b>CLIENTE</b></font></CENTER>
+			</td>
+
+
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:10pt"><b><?echo utf8_decode("TÉCNICO");?>&nbsp;</b></font></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:10pt"><b> NR&nbsp;</b></font></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:10pt"><b> TIPO AT</b></font></CENTER>
+			</td>
+*/?>
+		</tr>
+<? 
+$contador=0;
+while($consulta = mysql_fetch_array($res_01)) { $contador ++;
+$editing_now=$consulta['editing_now'];//técnico que esta editando
+if($editing_now !="" AND is_numeric($consulta['editing_now'])) {
+?>
+      <tr>
+	      <td height="20"  bordercolor="#FFFFFF">
+		      <a title="contato"></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo "P-"; echo $consulta['ndeocorrencia'];?></center></b></font>
+	      </td>
+	      <td height="20">
+		      <a title="endereco"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			     0 &nbsp;</b></center></font>
+	      </td>  
+	      <td height="20">
+		      <a title="numero"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20">
+		      <a title="complemento"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20"  >
+	      <a title="bairro"></a><font style="font-size: 7pt;">
+			      <?echo $consulta['executor'];?></font>
+	      </td>
+
+	      <td height="20"  >
+	      <a title="municipio"></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo $consulta['cidade'];?> </center></b></font>
+	      </td>
+	      <td height="20">
+		      <a title="estado"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			      &nbsp;</b></center></font>
+	      </td>  
+	      <td height="20">
+		      <a title="cep"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			     0&nbsp;</b></center></font>
+	      </td> 
+	      <td height="20">
+		      <a title="sexo"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			      0&nbsp;</b></center></font>
+	      </td> 
+	      <td height="20"  >
+		      <a title="datanascimento"></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo $consulta['dataabertura'];?></center></b></font>
+	      </td>	      
+	      <td height="20">
+		      <a title="estadocivil"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			     0 &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20"   >
+		      <a title="telefone residencial "></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo $consulta['telefone'];?></center></b></font>
+	      </td>
+	      <td height="20">
+		      <a title="telefonecomercial "></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			      <?echo $consulta['solicitante_fone'];?><b/></center></font>
+	      </td>
+	      <td height="20">
+		      <a title="telefonecelular"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20">
+		      <a title="email"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+      </tr>
+<?
+} 
+?>
+<? // #########Escreve os itens consultados na tab ####
+$Id=$consulta['id_01satisbasica'];
+//echo $Id;
+if ($editing_now!="" AND $editing_now!=$TecnicoLogado AND ! is_numeric($consulta['editing_now'])){
+//exibe  atenção! Somente o técnico que já capturou o registro pode editar
+	$Num_de_ocorrencia_ver_soc_anteriores=$consulta['ndeocorrencia'];//echo "id". $Id;	  
+	  $sqlComparar = "SELECT * FROM  pamostragem WHERE ndeocorrencia='" . $Num_de_ocorrencia_ver_soc_anteriores . "' AND 
+	  WEEK(datafim)='" . $Semana_Atual_all . "' AND YEAR(datafim)='" . $Ano_Atual . "' 
+	  AND formaatendimento  LIKE '%Visita%' ORDER BY ndeocorrencia DESC";
+	  $resComparar = mysql_query($sqlComparar) or die("Falha no comando sql");
+	  $totregComparar = mysql_num_rows($resComparar);//qtde de tecnicos que registraram execução, aqui contam o numero de execucoes independe se for mesmo tec
+	  $consultaQt = mysql_fetch_array($resComparar);
+	  $Prioridade = $consultaQt['prioriza_tec_unic_atend'];
+	  
+?>
+      <tr>
+	      <td height="20"  bordercolor="#FFFFFF">
+		      <a title="contato"></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo "P-"; echo $consulta['ndeocorrencia'];?></center></b></font>
+	      </td>
+	      <td height="20">
+		      <a title="endereco"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			     0 &nbsp;</b></center></font>
+	      </td>  
+	      <td height="20">
+		      <a title="numero"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20">
+		      <a title="complemento"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20"  >
+	      <a title="bairro"></a><font style="font-size: 7pt;">
+			      <?echo $consulta['executor'];?></font>
+	      </td>
+
+	      <td height="20"  >
+	      <a title="municipio"></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo $consulta['cidade'];?> </center></b></font>
+	      </td>
+	      <td height="20">
+		      <a title="estado"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			      &nbsp;</b></center></font>
+	      </td>  
+	      <td height="20">
+		      <a title="cep"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			     0&nbsp;</b></center></font>
+	      </td> 
+	      <td height="20">
+		      <a title="sexo"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			      0&nbsp;</b></center></font>
+	      </td> 
+	      <td height="20"  >
+		      <a title="datanascimento"></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo $consulta['dataabertura'];?></center></b></font>
+	      </td>	      
+	      <td height="20">
+		      <a title="estadocivil"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			     0 &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20"   >
+		      <a title="telefone residencial "></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo $consulta['telefone'];?></center></b></font>
+	      </td>
+	      <td height="20">
+		      <a title="telefonecomercial "></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			      <?echo $consulta['solicitante_fone'];?><b/></center></font>
+	      </td>
+	      <td height="20">
+		      <a title="telefonecelular"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20">
+		      <a title="email"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+      </tr>
+<?
+//fim exibe amarelo
+ }elseif($editing_now!="" AND $editing_now==$TecnicoLogado){
+	  //exibe vermelho. Este tecnico pegou este registro mas ainda nao terminou de fazer a pesquisa
+	  $Num_de_ocorrencia_ver_soc_anteriores=$consulta['ndeocorrencia'];	  //echo "id". $Id;  
+	  $sqlComparar = "SELECT * FROM  pamostragem WHERE ndeocorrencia='" . $Num_de_ocorrencia_ver_soc_anteriores . "' AND 
+	  WEEK(datafim)='" . $Semana_Atual_all . "' AND YEAR(datafim)='" . $Ano_Atual . "' 
+	  AND formaatendimento  LIKE '%Visita%' ORDER BY ndeocorrencia DESC";
+	  $resComparar = mysql_query($sqlComparar) or die("Falha no comando sql");
+	  $totregComparar = mysql_num_rows($resComparar);//qtde de tecnicos que registraram execução, aqui contam o numero de execucoes independe se for mesmo tec
+	  $consultaQt = mysql_fetch_array($resComparar);
+	  $Prioridade = $consultaQt['prioriza_tec_unic_atend'];
+	  
+?>
+      <tr>
+	      <td height="20"  bordercolor="#FFFFFF">
+		      <a title="contato"></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo "P-"; echo $consulta['ndeocorrencia'];?></center></b></font>
+	      </td>
+	      <td height="20">
+		      <a title="endereco"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			     0 &nbsp;</b></center></font>
+	      </td>  
+	      <td height="20">
+		      <a title="numero"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20">
+		      <a title="complemento"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20"  >
+	      <a title="bairro"></a><font style="font-size: 7pt;">
+			      <?echo $consulta['executor'];?></font>
+	      </td>
+
+	      <td height="20"  >
+	      <a title="municipio"></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo $consulta['cidade'];?> </center></b></font>
+	      </td>
+	      <td height="20">
+		      <a title="estado"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			      &nbsp;</b></center></font>
+	      </td>  
+	      <td height="20">
+		      <a title="cep"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			     0&nbsp;</b></center></font>
+	      </td> 
+	      <td height="20">
+		      <a title="sexo"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			      0&nbsp;</b></center></font>
+	      </td> 
+	      <td height="20"  >
+		      <a title="datanascimento"></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo $consulta['dataabertura'];?></center></b></font>
+	      </td>	      
+	      <td height="20">
+		      <a title="estadocivil"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			     0 &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20"   >
+		      <a title="telefone residencial "></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo $consulta['telefone'];?></center></b></font>
+	      </td>
+	      <td height="20">
+		      <a title="telefonecomercial "></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			      <?echo $consulta['solicitante_fone'];?><b/></center></font>
+	      </td>
+	      <td height="20">
+		      <a title="telefonecelular"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20">
+		      <a title="email"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+      </tr>
+
+<?//fim exibe vermelho
+ }else {
+  
+  $Num_de_ocorrencia_ver_soc_anteriores=$consulta['ndeocorrencia'];
+  	  $sqlComparar = "SELECT * FROM  pamostragem WHERE ndeocorrencia='" . $Num_de_ocorrencia_ver_soc_anteriores . "' AND 
+	  WEEK(datafim)='" . $Semana_Atual_all . "' AND YEAR(datafim)='" . $Ano_Atual . "' 
+	  AND formaatendimento  LIKE '%Visita%' ORDER BY ndeocorrencia DESC";
+	  $resComparar = mysql_query($sqlComparar) or die("Falha no comando sql");
+	  $totregComparar = mysql_num_rows($resComparar);//qtde de tecnicos que registraram execução, aqui contam o numero de execucoes independe se for mesmo tec
+ 	  $consultaQt = mysql_fetch_array($resComparar);
+	  $Prioridade = $consultaQt['prioriza_tec_unic_atend'];
+?>
+      <tr>
+	      <td height="20"  bordercolor="#FFFFFF">
+		      <a title="contato"></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo "P-"; echo $consulta['ndeocorrencia'];?></center></b></font>
+	      </td>
+	      <td height="20">
+		      <a title="endereco"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			     0 &nbsp;</b></center></font>
+	      </td>  
+	      <td height="20">
+		      <a title="numero"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20">
+		      <a title="complemento"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20"  >
+	      <a title="bairro"></a><font style="font-size: 7pt;">
+			      <?echo $consulta['executor'];?></font>
+	      </td>
+
+	      <td height="20"  >
+	      <a title="municipio"></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo $consulta['cidade'];?> </center></b></font>
+	      </td>
+	      <td height="20">
+		      <a title="estado"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			      &nbsp;</b></center></font>
+	      </td>  
+	      <td height="20">
+		      <a title="cep"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			     0&nbsp;</b></center></font>
+	      </td> 
+	      <td height="20">
+		      <a title="sexo"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			      0&nbsp;</b></center></font>
+	      </td> 
+	      <td height="20"  >
+		      <a title="datanascimento"></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo $consulta['dataabertura'];?></center></b></font>
+	      </td>	      
+	      <td height="20">
+		      <a title="estadocivil"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			     0 &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20"   >
+		      <a title="telefone residencial "></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo $consulta['telefone'];?></center></b></font>
+	      </td>
+	      <td height="20">
+		      <a title="telefonecomercial "></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			      <?echo $consulta['solicitante_fone'];?><b/></center></font>
+	      </td>
+	      <td height="20">
+		      <a title="telefonecelular"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+	      <td height="20">
+		      <a title="email"></a><font style="font-size: 7pt;"  color=#000000><b><center>
+			    0  &nbsp;</b></center></font>
+	      </td> 
+      </tr>
+<? }//fim do primeiro if ($editing_now!="" AND $editing_now!=$TecnicoLogado){		
+} // fim while 
+?>
+	</table></center>
+
+
+
+<?php
+// Configurações header para forçar o download
+// Definimos o nome do arquivo que será exportado
+
+
+mysql_close($conn);
+?>
+

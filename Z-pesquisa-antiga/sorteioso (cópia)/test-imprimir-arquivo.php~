@@ -1,0 +1,315 @@
+<?
+/*SEMANA PARA PESQUISAR
+id's editados (que ja responderam a pesquisa) possuem valor 1
+Este arquivo mostra a lista dos dados de soc existentes no bd da semana anterior, mostrando uma coluna que permite editar a linha que levara ao arquivo ./editar-preencher-resposta-salvar-satisf.php
+não mostra as ordens de serviço do nr que o tecnico adm pertence.
+ fixa as o.s. que farão parte da pesquisa para determinada semana (semana anterior cuja pesquisa se faz na semana atual)
+ nao considera mesmo numero de o.s. para o mesmo técnico.
+ 1- distintos    2- sorteio
+*/
+include '../conectbd.php';
+$Semana_Atual = date("W"); //pegar semana atual
+include '../Semana_Atual.php';
+//$Semana_Anterior = $Semana_Atual-1; //echo $Semana_Anterior;
+$Ano_Atual = date("Y");
+$id=&$_GET['a'];
+$arquivo = "ADM-ver-soc-semanas-anteriores.php"; // COLOQUE AQUI O NOME DADO A ESTE ARQUIVO
+
+
+$SQLID = "SELECT *, date_format( dataabertura, '%d/%m/%Y' ) as DataAbertura FROM sorteioso WHERE 
+WEEK(dataabertura)='" . $Semana_Anterior . "' AND YEAR(dataabertura)='" . $Ano_Atual . "' 
+AND contato NOT LIKE '' ORDER BY executor"; // AND NOT executor LIKE '%" . $CidadeTecLogado . "%'
+$res_01 = mysql_query($SQLID) or die("Falha no comando sql linha 48"); 
+//$consulta = mysql_fetch_array($res_01);
+$totreg = mysql_num_rows($res_01);
+
+
+
+$arquivo = 'planilhasat.xls';
+header ("Expires: Mon, 26 Jul 2015 05:00:00 GMT");
+
+header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+
+header ("Cache-Control: no-cache, must-revalidate");
+
+header ("Pragma: no-cache");
+
+header ("Content-type: application/x-msexcel");
+
+header ("Content-Disposition: attachment; filename=\"{$arquivo}\"" );
+
+header ("Content-Description: PHP Generated Data" );
+?>
+<table align="right"  border="0" bordercolor="#ffffff" cellpadding="0" cellspacing="0" width="99%">
+	<tr>
+	<td>
+	<table border="0" bordercolor="#C0C0C0"  cellpadding="5" cellspacing="0" width="100%" height="20" >
+		<tr>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:8pt"><b>CONTATO</b></FONT></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:8pt"><b>TELEFONE</b></FONT></CENTER>
+			</td>
+
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:8pt"><b><?echo utf8_decode("ORDEM DE SERVIÇO");?></b></FONT></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:8pt"><b>CLIENTE</b></font></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:8pt"><b>CIDADE&nbsp;</b></font></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:8pt"><b>DATA DE ABERTURA&nbsp;</b></font></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:8pt"><b><?echo utf8_decode("TÉCNICO");?>&nbsp;</b></font></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:8pt"><b> NR&nbsp;</b></font></CENTER>
+			</td>
+			<td height="20"  class="titulos" >
+				<CENTER><FONT STYLE="font-size:8pt"><b> TIPO AT</b></font></CENTER>
+			</td>
+		</tr>
+<? 
+$contador=0;
+while($consulta = mysql_fetch_array($res_01)) { $contador ++;
+$editing_now=$consulta['editing_now'];//técnico que esta editando
+if($editing_now !="" AND is_numeric($consulta['editing_now'])) {
+?>
+      <tr>
+	      <td height="20"   >
+		      <a title="Contato"></a><font style="font-size: 7pt;" color=#FF7F00><b><center>
+			      <?    echo utf8_decode( $consulta['contato']);?></center></b></font>
+	      </td>
+
+	      <td height="20"   >
+		      <a title="telefone "></a><font style="font-size: 7pt;" color=#FF7F00><b><center>
+			      <?echo $consulta['telefone'];?></center></b></font>
+	      </td>
+
+	      <td height="20"   >
+		      <a title="ndeocorrencia"></a><font style="font-size: 7pt;" color=#FF7F00><b><center>
+			      <?echo $consulta['ndeocorrencia'];?></center></b></font>
+	      </td>
+	      <td height="20"  >
+		      <a title="cliente"></a><font style="font-size: 7pt;" color=#FF7F00><b><center>
+			      <?echo $consulta['cliente'];?> &nbsp;</center></b></font>
+	      </td>
+	      <td height="20"  >
+	      <a title="cidade"></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo $consulta['cidade'];?> &nbsp;</center></b></font>
+	      </td>	
+	      <td height="20"  >
+		      <a title="dataabertura"></a><font style="font-size: 7pt;" color=#000000><b><center>
+			      <?echo $consulta['DataAbertura'];?></center></b></font>
+	      </td>
+	      <td height="20"  >
+	      <a title="tecnico"></a><font style="font-size: 7pt;">
+			      <?echo $consulta['tecnico'];?></font>
+	      </td>
+	      <td height="20"  >
+	      <a title="tecnico"></a><font style="font-size: 7pt;">
+			      <?echo $consulta['executor'];?></font>
+	      </td>
+	      <td height="20"  >
+	      <a title="tecnico"></a><font style="font-size: 7pt;">
+			      <?echo $consulta['formaatendimento'];?></font>
+	      </td>
+      </tr>
+<?
+} 
+?>
+<? // #########Escreve os itens consultados na tab ####
+$Id=$consulta['id_01satisbasica'];
+//echo $Id;
+if ($editing_now!="" AND $editing_now!=$TecnicoLogado AND ! is_numeric($consulta['editing_now'])){
+//exibe  atenção! Somente o técnico que já capturou o registro pode editar
+	$Num_de_ocorrencia_ver_soc_anteriores=$consulta['ndeocorrencia'];//echo "id". $Id;	  
+	  $sqlComparar = "SELECT * FROM  pamostragem WHERE ndeocorrencia='" . $Num_de_ocorrencia_ver_soc_anteriores . "' AND 
+	  WEEK(dataabertura)='" . $Semana_Atual_all . "' AND YEAR(dataabertura)='" . $Ano_Atual . "' 
+	  AND formaatendimento  LIKE '%Visita%' ORDER BY ndeocorrencia DESC";
+	  $resComparar = mysql_query($sqlComparar) or die("Falha no comando sql");
+	  $totregComparar = mysql_num_rows($resComparar);//qtde de tecnicos que registraram execução, aqui contam o numero de execucoes independe se for mesmo tec
+	  $consultaQt = mysql_fetch_array($resComparar);
+	  $Prioridade = $consultaQt['prioriza_tec_unic_atend'];
+	  
+?>
+		<tr>
+			<td height="20"   >
+				<a title="Contato"></a><font style="font-size: 7pt;" color=#000000><b><center>
+					<?    echo utf8_decode( $consulta['contato']);?></center></b></font>
+			</td>
+
+			<td height="20"   >
+				<a title="telefone "></a><font style="font-size: 7pt;" color=#000000><b><center>
+					<?echo $consulta['telefone'];?></center></b></font>
+			</td>
+
+			<td height="20"   >
+				<a title="ndeocorrencia"></a><font style="font-size: 7pt;" color=#000000><b><center>
+					<?echo $consulta['ndeocorrencia'];?></center></b></font>
+			</td>
+			<td height="20"  >
+				<a title="cliente"></a><font style="font-size: 7pt;" color=#000000><b><center>
+					<?echo $consulta['cliente'];?> &nbsp;</center></b></font>
+			</td>
+			<td height="20"  >
+			<a title="cidade"></a><font style="font-size: 7pt;" color=#000000><b><center>
+					<?echo $consulta['cidade'];?> &nbsp;</center></b></font>
+			</td>	
+			<td height="20"  >
+				<a title="dataabertura"></a><font style="font-size: 7pt;" color=#000000><b><center>
+					<?echo $consulta['DataAbertura'];?></center></b></font>
+			</td>
+			<td height="20"  >
+			<a title="tecnico"></a><font style="font-size: 7pt;">
+					<?echo $consulta['tecnico'];?></font>
+			</td>
+			<td height="20"  >
+			<a title="tecnico"></a><font style="font-size: 7pt;">
+					<?echo $consulta['executor'];?></font>
+			</td>
+			<td height="20"  >
+			<a title="tecnico"></a><font style="font-size: 7pt;">
+					<?echo $consulta['formaatendimento'];?></font>
+			</td>			
+		</tr>
+<?
+//fim exibe amarelo
+ }elseif($editing_now!="" AND $editing_now==$TecnicoLogado){
+	  //exibe vermelho. Este tecnico pegou este registro mas ainda nao terminou de fazer a pesquisa
+	  $Num_de_ocorrencia_ver_soc_anteriores=$consulta['ndeocorrencia'];	  //echo "id". $Id;  
+	  $sqlComparar = "SELECT * FROM  pamostragem WHERE ndeocorrencia='" . $Num_de_ocorrencia_ver_soc_anteriores . "' AND 
+	  WEEK(dataabertura)='" . $Semana_Atual_all . "' AND YEAR(dataabertura)='" . $Ano_Atual . "' 
+	  AND formaatendimento  LIKE '%Visita%' ORDER BY ndeocorrencia DESC";
+	  $resComparar = mysql_query($sqlComparar) or die("Falha no comando sql");
+	  $totregComparar = mysql_num_rows($resComparar);//qtde de tecnicos que registraram execução, aqui contam o numero de execucoes independe se for mesmo tec
+	  $consultaQt = mysql_fetch_array($resComparar);
+	  $Prioridade = $consultaQt['prioriza_tec_unic_atend'];
+	  
+?>
+		<tr>
+			<td height="20"   >
+				<a title="Contato"></a><font style="font-size: 7pt;" color=#FF0000><b><center>
+					<?    echo utf8_decode($consulta['contato']);?></center></b></font>
+			</td>
+			<td height="20"   >
+				<a title="telefone "></a><font style="font-size: 7pt;" color=#FF0000><b><center>
+					<?echo $consulta['telefone'];?></center></b></font>
+			</td>
+
+			<td height="20"   >
+				<a title="ndeocorrencia"></a><font style="font-size: 7pt;" color=#FF0000><b><center>
+					<?echo $consulta['ndeocorrencia'];?></center></b></font>
+			</td>
+			<td height="20"  >
+				<a title="cliente"></a><font style="font-size: 7pt;" color=#FF0000><b><center>
+					<?echo $consulta['cliente'];?> &nbsp;</center></b></font>
+			</td>
+			<td height="20"  >
+			<a title="cidade"></a><font style="font-size: 7pt;" color=#FF0000><b><center>
+					<?echo $consulta['cidade'];?> &nbsp;</center></b></font>
+			</td>	
+			<td height="20"  >
+				<a title="dataabertura"></a><font style="font-size: 7pt;" color=#FF0000><b><center>
+					<?echo $consulta['DataAbertura'];?></center></b></font>
+			</td>
+			<td height="20"  >
+			<a title="tecnico"></a><font style="font-size: 7pt;">
+					<?echo $consulta['tecnico'];?></font>
+			</td>
+			<td height="20"  >
+			<a title="tecnico"></a><font style="font-size: 7pt;">
+					<?echo $consulta['executor'];?></font>
+			</td>
+			<td height="20"  >
+			<a title="tecnico"></a><font style="font-size: 7pt;">
+					<?echo $consulta['formaatendimento'];?></font>
+			</td>
+		</tr>
+
+<?//fim exibe vermelho
+ }else {
+  
+  $Num_de_ocorrencia_ver_soc_anteriores=$consulta['ndeocorrencia'];
+  	  $sqlComparar = "SELECT * FROM  pamostragem WHERE ndeocorrencia='" . $Num_de_ocorrencia_ver_soc_anteriores . "' AND 
+	  WEEK(dataabertura)='" . $Semana_Atual_all . "' AND YEAR(dataabertura)='" . $Ano_Atual . "' 
+	  AND formaatendimento  LIKE '%Visita%' ORDER BY ndeocorrencia DESC";
+	  $resComparar = mysql_query($sqlComparar) or die("Falha no comando sql");
+	  $totregComparar = mysql_num_rows($resComparar);//qtde de tecnicos que registraram execução, aqui contam o numero de execucoes independe se for mesmo tec
+ 	  $consultaQt = mysql_fetch_array($resComparar);
+	  $Prioridade = $consultaQt['prioriza_tec_unic_atend'];
+?>
+		<tr>
+			<td height="20"   >
+				<a title="Contato"></a><font style="font-size: 7pt;"><center>
+					<?    echo utf8_decode( $consulta['contato']);?></center></font>
+			</td>
+
+			<td height="20"   >
+				<a title="telefone "></a><font style="font-size: 7pt;"><center>
+					<?echo $consulta['telefone'];?></center></font>
+			</td>
+
+			<td height="20"   >
+				<a title="ndeocorrencia"></a><font style="font-size: 7pt;"><center>
+					<?echo $consulta['ndeocorrencia'];?></center> </font>
+			</td>
+			<td height="20"  >
+				<a title="cliente"></a><font style="font-size: 7pt;"><center>
+					<?echo $consulta['cliente'];?> &nbsp;</center></font>
+			</td>
+			<td height="20"  >
+			<a title="cidade"></a><font style="font-size: 7pt;"><center>
+					<?echo $consulta['cidade'];?> &nbsp;</center></font>
+			</td>	
+			<td height="20"  >
+				<a title="dataabertura"></a><font style="font-size: 7pt;"><center>
+					<?echo $consulta['DataAbertura'];?></center></font>
+			</td>
+
+			<td height="20"  >
+			<a title="tecnico"></a><font style="font-size: 7pt;">
+					<?echo $consulta['tecnico'];?></font>
+			</td>
+			<td height="20"  >
+			<a title="tecnico"></a><font style="font-size: 7pt;">
+					<?echo $consulta['executor'];?></font>
+			</td>
+			<td height="20"  >
+			<a title="tecnico"></a><font style="font-size: 7pt;">
+					<?echo $consulta['formaatendimento'];?></font>
+			</td>
+		</tr>
+<? }//fim do primeiro if ($editing_now!="" AND $editing_now!=$TecnicoLogado){		
+} // fim while 
+?>
+	</table></center>
+	<table>
+		<tr>
+			<td colspan=9>
+				<font color="#C0C0C0" face="Arial" style="font-size: 11pt"><? echo utf8_decode("<br>Foram encontradas $totreg  ocorrências.");?>
+					<?
+						echo utf8_decode("&nbsp;Semana n	&ordm;&nbsp;"); echo $Semana_Anterior; echo utf8_decode(" do ano de "); echo $Ano_Atual//2012
+					?>
+				</font>
+			</td>
+		</tr>
+
+    </td>
+  </tr>
+</table>
+
+
+<?php
+// Configurações header para forçar o download
+// Definimos o nome do arquivo que será exportado
+
+
+mysql_close($conn);
+?>
+

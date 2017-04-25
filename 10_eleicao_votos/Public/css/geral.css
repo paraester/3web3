@@ -1,0 +1,15 @@
+.site {
+    width: 800px;
+}
+
+nav {
+    margin-bottom: 10px;
+}
+
+.coluna-botoes {
+    width: 100px;
+}
+
+.form-botao {
+    display: inline;
+}

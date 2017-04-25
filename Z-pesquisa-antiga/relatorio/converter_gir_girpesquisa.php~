@@ -1,0 +1,269 @@
+<? //carregando bem lentamente
+ob_start(); //Pra segurar o buffer de saída sem enviar
+ignore_user_abort(true); //Nao adianta o usuario cancelar a página, pode ser ruim em alguns casos
+
+echo "<html><body>Iniciando converter dados as ";
+// current time
+echo date('h:i:s') . "\n";
+echo str_repeat("  ", 1024), "\n"; // isto eh necessario pq alguns navegadores nao exibem nada a menos que chegue mais de 1Kb.
+
+ob_end_flush();
+flush(); //Pra enviar o buffer de saída ao navegador de uma vez
+
+
+for ($i=0; $i<10; $i++)
+{
+    echo '<br>Convertendo arquivo...<br />';
+    ob_flush();
+    flush(); //Pra enviar o que jah esteja no buffer de saída ao navegador
+
+    sleep(2); //apenas para esperar dois segundos, so pra ver que funciona
+}
+// current time
+echo "<br>Terminou as " . date('h:i:s') . "\n";
+?>
+
+<?
+include '../conectbd.php';
+$Semana_Escolhida = 003; //eh relativo ao mes para o relatorio
+$Ano_Escolhida = 2013;//$Ano_Escolhida = &$_POST['ano'];
+$sqlTruncate_girpesquisaresposta = "TRUNCATE TABLE girpesquisaresposta"; //para limpar a tabela respostas e atualizar com novos dados
+$ressqlTruncate_girpesquisaresposta = mysql_query($sqlTruncate_girpesquisaresposta) or die(mysql_error());
+$sqlPesquisa = "SELECT * FROM girpesquisaresposta";
+$ResPesquisa = mysql_query($sqlPesquisa) or die("Falha no comando sqlPesquisa");
+while($consulta = mysql_fetch_array($ResPesquisa)) {
+//   $id        = $consulta[0];
+     $Semana=$Semana_Escolhida;
+     $Ano=$Ano_Escolhida;
+     $IP_USER=$consulta['cidadao'];
+     $Pergunta1=$consulta['sexo'];           
+     $Pergunta2=$consulta['cortesia'];
+     $Pergunta2_code =  utf8_encode($Pergunta2);
+            switch ($Pergunta2_code) {
+	      case "ÓTIMO": //ótimo
+		  $Pergunta2="a";
+		  break;
+	      case "BOM": //bom
+		  $Pergunta2="b";
+		  break;
+	      case "REGULAR - PORQUÊ?": //Regular
+		  $Pergunta2="c";
+		  break;
+	      case "RUIM - PORQUE?": //ruim
+		  $Pergunta2="d";
+		  break;
+	      case "PÉSSIMO - PORQUE?": //pessimo
+		  $Pergunta2="e";
+		  break;
+	      default:
+		  $Pergunta2="f";
+	  }
+     $Pergunta3=$consulta['profissionalismo'];
+     $Pergunta3_code =  utf8_encode($Pergunta3);
+         switch ($Pergunta3_code) {
+	      case "ÓTIMO": //ótimo
+		  $Pergunta3="a";
+		  break;
+	      case "BOM": //bom
+		  $Pergunta3="b";
+		  break;
+	      case "REGULAR - PORQUÊ?": //Regular
+		  $Pergunta3="c";
+		  break;
+	      case "RUIM - PORQUE?": //ruim
+		  $Pergunta3="d";
+		  break;
+	      case "PÉSSIMO - PORQUE?": //pessimo
+		  $Pergunta3="e";
+		  break;
+	      default:
+		  $Pergunta3="f";
+	  }
+
+
+     $pergunta4=$consulta['avaliacaoesolucao'];
+     $Pergunta4_code =  utf8_encode($pergunta4);
+	 switch ($Pergunta4_code) {
+	      case "ÓTIMO": //ótimo
+		  $pergunta4="a";
+		  break;
+	      case "BOM": //bom
+		  $pergunta4="b";
+		  break;
+	      case "REGULAR - PORQUÊ?": //Regular
+		  $pergunta4="c";
+		  break;
+	      case "RUIM - PORQUE?": //ruim
+		  $pergunta4="d";
+		  break;
+	      case "PÉSSIMO - PORQUE?": //pessimo
+		  $pergunta4="e";
+		  break;
+	      default:
+		  $pergunta4="f";
+	  }
+     $pergunta5=$consulta['esclarecimentoduvidas'];
+     $Pergunta5_code =  utf8_encode($pergunta5);
+	 switch ($Pergunta5_code) {
+	      case "ÓTIMO": //ótimo
+		  $pergunta5="a";
+		  break;
+	      case "BOM": //bom
+		  $pergunta5="b";
+		  break;
+	      case "REGULAR - PORQUÊ?": //Regular
+		  $pergunta5="c";
+		  break;
+	      case "RUIM - PORQUE?": //ruim
+		  $pergunta5="d";
+		  break;
+	      case "PÉSSIMO - PORQUE?": //pessimo
+		  $pergunta5="e";
+		  break;
+	      default:
+		  $pergunta5="f";
+	  }
+     $pergunta6=$consulta['facilidadeabrir'];
+     $Pergunta6_code =  utf8_encode($pergunta6);
+	 switch ($Pergunta6_code) {
+	      case "ÓTIMO": //ótimo
+		  $pergunta6="a";
+		  break;
+	      case "BOM": //bom
+		  $pergunta6="b";
+		  break;
+	      case "REGULAR - PORQUÊ?": //Regular
+		  $pergunta6="c";
+		  break;
+	      case "RUIM - PORQUE?": //ruim
+		  $pergunta6="d";
+		  break;
+	      case "PÉSSIMO - PORQUE?": //pessimo
+		  $pergunta6="e";
+		  break;
+	      default:
+		  $pergunta6="f";
+	  }
+     $pergunta7= $consulta['temposolucao'];
+     $Pergunta7_code =  utf8_encode($pergunta7);
+	 switch ($Pergunta7_code) {
+	      case "ÓTIMO": //ótimo
+		  $pergunta7="a";
+		  break;
+	      case "BOM": //bom
+		  $pergunta7="b";
+		  break;
+	      case "REGULAR - PORQUÊ?": //Regular
+		  $pergunta7="c";
+		  break;
+	      case "RUIM - PORQUE?": //ruim
+		  $pergunta7="d";
+		  break;
+	      case "PÉSSIMO - PORQUE?": //pessimo
+		  $pergunta7="e";
+		  break;
+	      default:
+		  $pergunta7="f";
+	  }
+
+     $pergunta8= $consulta['qualidade'];
+     $Pergunta8_code =  utf8_encode($pergunta8);
+	 switch ($Pergunta8_code) {
+	      case "ÓTIMO": //ótimo
+		  $pergunta8="a";
+		  break;
+	      case "BOM": //bom
+		  $pergunta8="b";
+		  break;
+	      case "REGULAR - PORQUÊ?": //Regular
+		  $pergunta8="c";
+		  break;
+	      case "RUIM - PORQUE?": //ruim
+		  $pergunta8="d";
+		  break;
+	      case "PÉSSIMO - PORQUE?": //pessimo
+		  $pergunta8="e";
+		  break;
+	      default:
+		  $pergunta8="f";
+	  }
+     $Pergunta2Pessimo=$consulta['Pergunta1Pessimo']; //Pergunta1Pessimo -pq profissionalismo   Pergunta2Pessimo
+     $Pergunta3Pessimo=$consulta['pessimo2porque']; //avaliacaoesolucao - pq     
+     $Pergunta6Pessimo=$consulta['Pergunta6Pessimo']; 
+     $Pergunta7Pessimo=$consulta['Pergunta7Pessimo']; 
+     $Pergunta8Pessimo=$consulta['Pergunta8Pessimo']; 
+     $pergunta9= $consulta['sugestao'];
+     $regional_antes=$consulta['regional']; 
+     $regional_antes =  utf8_encode($regional_antes);
+	 switch ($regional_antes) {
+	      case "NR MARINGÁ": //MARINGA
+		  $regional="NR MARINGA";
+		  break;
+	      case "NR PARANAGUÁ": //PARANAGUA
+		  $regional="NR PARANAGUA";
+		  break;
+	      case "PA FOZ DO IGUAÇU": //FOZ
+		  $regional="PA FOZ DO IGUACU";
+		  break;
+	      case "NR GUARAPUAVA": 
+		  $regional="NR GUARAPUAVA";
+		  break;
+	      case "NR CASCAVEL": 
+		  $regional="NR CASCAVEL";
+		  break;
+	      case "NR PONTA GROSSA": 
+		  $regional="NR PONTA GROSSA";
+		  break;
+	      case "NR LONDRINA": 
+		  $regional="NR LONDRINA";
+		  break;
+	      case "NR JACAREZINHO": 
+		  $regional="NR JACAREZINHO";
+		  break;
+	      case "NR PATO BRANCO": 
+		  $regional="NR PATO BRANCO";
+		  break;	
+	      case "NR CURITIBA": 
+		  $regional="NR CURITIBA";
+		  break;
+	      case "NR UMUARAMA": 
+		  $regional="NR UMUARAMA";
+		  break;
+	      default:
+		  $regional="FALTA REGIONAL";
+	  }
+     
+     $REFERER= $consulta['cidade']; 
+     $tecnicoavaliado=$consulta['tecnico']; 
+     $cliente= $consulta['cliente']; 
+     $ndeocorrencia=$consulta['ndeocorrencia'];
+     $Pergunta2Pessimo = mysql_real_escape_string(stripslashes($Pergunta2Pessimo));
+     $Pergunta3Pessimo = mysql_real_escape_string(stripslashes($Pergunta3Pessimo));
+     $Pergunta7Pessimo = mysql_real_escape_string(stripslashes($Pergunta7Pessimo));
+     $Pergunta8Pessimo = mysql_real_escape_string(stripslashes($Pergunta8Pessimo));
+     $pergunta9 = mysql_real_escape_string(stripslashes($pergunta9));     
+     
+//$sqlim="INSERT INTO girpesquisaresposta VALUES id='', idformpesquisada='', contato='', cliente='$cliente', ndeocorrencia='$ndeocorrencia', Semana='$Semana', Ano='$Ano', Pergunta1='$Pergunta1', Pergunta2='$Pergunta2', pergunta3='$Pergunta3', pergunta4='$pergunta4', pergunta5='$pergunta5', pergunta6='$pergunta6', pergunta7='$pergunta7', pergunta8='$pergunta8', pergunta9='$pergunta9', Pergunta1Pessimo='$Pergunta1Pessimo', Pergunta2Pessimo='$Pergunta2Pessimo', Pergunta3Pessimo='', Pergunta4Pessimo='', Pergunta5Pessimo='', Pergunta6Pessimo='', Pergunta7Pessimo='$Pergunta7Pessimo', Pergunta8Pessimo='$Pergunta8Pessimo', Data='', IP_USER='$IP_USER', REFERER='$REFERER', TecnicoLogado='', tecnicoavaliado='$tecnicoavaliado', regional='$regional'";
+$sqlim="INSERT INTO girpesquisaresposta 
+(id, idformpesquisada, contato, cliente, ndeocorrencia, Semana, Ano, Pergunta1, Pergunta2, pergunta3, pergunta4, pergunta5, pergunta6, pergunta7, pergunta8, pergunta9, Pergunta1Pessimo, Pergunta2Pessimo, Pergunta3Pessimo, Pergunta4Pessimo, Pergunta5Pessimo, Pergunta6Pessimo, Pergunta7Pessimo, Pergunta8Pessimo, Data, IP_USER, REFERER, TecnicoLogado, tecnicoavaliado, regional) VALUES
+('', '', '', '$cliente', '$ndeocorrencia', '$Semana', '$Ano', '$Pergunta1', '$Pergunta2', '$Pergunta3', '$pergunta4', '$pergunta5', '$pergunta6', '$pergunta7', '$pergunta8', '$pergunta9', '','$Pergunta2Pessimo', '$Pergunta3Pessimo', '', '', '$Pergunta6Pessimo', '$Pergunta7Pessimo', '$Pergunta8Pessimo', '', '$IP_USER', '$REFERER', '', '$tecnicoavaliado', '$regional')";
+//echo $sqlim;
+//echo "<br>";
+$Inserem = mysql_query($sqlim) or die (mysql_error());
+}
+echo utf8_encode("ARQUIVOS FORAM CONVERTIDOS <BR><BR>");
+?>
+
+<html>
+<head>
+<script type="text/javascript">
+<!--
+function delayer(){
+    window.location = "../index.php"
+}
+//-->
+</script>
+</head>
+<? echo utf8_encode("VOCE SERA REDIRECIONADO AGUARDE OS ARQUIVOS FORAM CONVERTIDOS ");?>
+
+<body onLoad="setTimeout('delayer()', 3000)">

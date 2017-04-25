@@ -1,0 +1,859 @@
+<?
+include '../conectbd.php';
+$Semana_Escolhida = &$_POST['semana']; //eh relativo ao mes para o relatorio
+$Ano_Escolhida = &$_POST['ano'];
+?>
+<table>
+<table width="80%">
+	<tr>
+	<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" BGCOLOR="#0066CC"><B><FONT COLOR="#FFFFFF">QUANTIDADE DE SOC PESQUISADAS POR REGIONAL</FONT></B></td>
+	</tr>
+</table>
+<table width="50%">
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT FACE="Arial" COLOR="#000000">REGIONAIS</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000"></FONT></B>
+		</td>
+
+	</tr>
+	<? 
+	$sqlPesquisa = "SELECT regional, count(*) as total FROM `girpesquisaresposta` WHERE Semana LIKE $Semana_Escolhida AND Ano LIKE $Ano_Escolhida GROUP BY regional ORDER BY regional";
+	$ResPesquisa = mysql_query($sqlPesquisa) or die("Falha no comando sqlPesquisa");
+	while($consulta = mysql_fetch_array($ResPesquisa)) {
+	?>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT">
+		    <B><FONT COLOR="#000000">
+		      <? echo $consulta['regional']; ?></FONT>
+		    </B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT">
+		    <B><FONT COLOR="#000000">
+		      <? echo $consulta['total']; ?></FONT>
+		    </B>
+		</td>
+<? }?>
+<table width="80%">
+	<tr>
+	<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" BGCOLOR="#0066CC"><B><FONT COLOR="#FFFFFF"></FONT></B></td>
+	</tr>
+</table>
+<table>
+<br>
+
+<table width="80%">
+	<tr>
+	<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" BGCOLOR="#0066CC"><B><FONT COLOR="#FFFFFF">RESPOSTAS PESQUISAS POR REGIONAL </FONT></B></td>
+	</tr>
+</table>
+<table border=0>
+<tr>		
+  <td>
+      <INPUT type="hidden" title="semana" NAME="semana" VALUE="<?echo $Semana_Escolhida;?>"><? // passar semana?>
+      <INPUT type="hidden" title="ano" NAME="ano" VALUE="<?echo $Ano_Escolhida;?>"><? // passar ANO?>
+  </td>
+</tr>
+	<tr><td>&nbsp;&nbsp;</td></tr>
+<?
+	$Array_Regionais=Array();
+	$sql = "SELECT DISTINCT regional FROM `girpesquisaresposta` WHERE Semana LIKE $Semana_Escolhida AND Ano LIKE $Ano_Escolhida  ORDER BY regional";
+	$Res = mysql_query($sql) or die("Falha no comando sql");
+	$Totreg = mysql_num_rows($Res);
+	while($consulta = mysql_fetch_array($Res)) {
+	  $Regional = $consulta['regional'];
+	  $Array_Regionais[$Regional]=$Regional;
+	}
+?>
+
+<table>
+	<tr>
+	<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT" BGCOLOR="#0066CC"><B><FONT COLOR="#FFFFFF">PERGUNTA 1</FONT></B></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT FACE="Arial" COLOR="#000000">REGIONAIS</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">MASCULINO</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">FEMININO</FONT></B>
+		</td>
+	</tr>
+	<? 
+	$sqlPesquisa = "SELECT regional, pergunta1, count(*) as total FROM `girpesquisaresposta` WHERE Semana LIKE $Semana_Escolhida AND Ano LIKE $Ano_Escolhida GROUP BY regional, pergunta1 ORDER BY regional";
+	$ResPesquisa = mysql_query($sqlPesquisa) or die("Falha no comando sqlPesquisa");
+	$TotregPesquisa = mysql_num_rows($ResPesquisa);//qtde de tecnicos que registraram execução, aqui contam o numero de execucoes independe se for mesmo tec
+	
+	$Array_Total_respostaM = Array();
+	$Array_Total_respostaF = Array();
+	foreach ($Array_Regionais as $Regional => $NomeDaRegional) { //preenche com valor zero para todas as regionais em ambos os vetores, isso antes de contar
+	  $Array_Total_respostaM[$Regional] = 0;
+	  $Array_Total_respostaF[$Regional] = 0;
+	}
+	while($consulta = mysql_fetch_array($ResPesquisa)) {
+	  $Regional = $consulta['regional'];	  
+	  if ( $consulta['pergunta1'] == "FEMININO" ) {
+	    $Array_Total_respostaF[$Regional] = $consulta['total'];	    
+	  } else {
+	    $Array_Total_respostaM[$Regional] = $consulta['total'];
+	  }
+	}	
+	foreach ($Array_Total_respostaF as $Regional => $TotalResposta) {
+	?>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT">
+		    <B><FONT COLOR="#000000">
+		      <? echo $Regional; ?></FONT>
+		    </B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_respostaM[$Regional]; //masculino?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $TotalResposta;//feminino ?><BR></FONT>
+		</td>
+
+	</tr>
+
+	<? } //fechamento foreach para pergunta 1 ?> 
+</table>
+<table>
+	<tr>
+	<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" COLSPAN="7" ALIGN="LEFT" BGCOLOR="#0066CC"><B><FONT COLOR="#FFFFFF">PERGUNTA 2: CONSIDERANDO O ATENDIMENTO DO TECNICO, O(A) SR(A) DIRIA QUE. A CORTESIA FOI:</FONT></B></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT FACE="Arial" COLOR="#000000">REGIONAIS</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">OTIMO</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">BOM</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">REGULAR</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">RUIM</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">PESSIMO</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">NAO ...</FONT></B>
+		</td>
+	</tr>
+	<? 
+	$sqlPesquisa = "SELECT regional, pergunta2, count(*) as total FROM `girpesquisaresposta` WHERE Semana LIKE $Semana_Escolhida AND Ano LIKE $Ano_Escolhida GROUP BY regional, pergunta2 ORDER BY regional";
+	$ResPesquisa = mysql_query($sqlPesquisa) or die("Falha no comando sqlPesquisa");
+	$TotregPesquisa = mysql_num_rows($ResPesquisa);//qtde de tecnicos que registraram execução, aqui contam o numero de execucoes independe se for mesmo tec
+	
+	$Array_Total_resposta_Otimo = Array();
+	$Array_Total_resposta_Bom = Array();
+	$Array_Total_resposta_Regular = Array();
+	$Array_Total_resposta_Ruim = Array();
+	$Array_Total_resposta_Pessimo = Array();
+	$Array_Total_resposta_Nao = Array();
+	
+	foreach ($Array_Regionais as $Regional => $NomeDaRegional) { //preenche com valor zero para todas as regionais em ambos os vetores, isso antes de contar
+	  $Array_Total_resposta_Otimo[$Regional] = 0;
+	  $Array_Total_resposta_Bom[$Regional] = 0;
+	  $Array_Total_resposta_Regular[$Regional] = 0;
+	  $Array_Total_resposta_Ruim[$Regional] = 0;
+	  $Array_Total_resposta_Pessimo[$Regional] = 0;
+	  $Array_Total_resposta_Nao[$Regional] = 0;
+	}
+	while($consulta = mysql_fetch_array($ResPesquisa)) {
+	  $Regional = $consulta['regional'];	  
+
+	  $i = $consulta['pergunta2'];
+	  switch ($i) {
+	      case "a": //ótimo
+		  $Array_Total_resposta_Otimo[$Regional] = $consulta['total'];
+		  break;
+	      case "b": //bom
+		  $Array_Total_resposta_Bom[$Regional] = $consulta['total'];
+		  break;
+	      case "c": //Regular
+		  $Array_Total_resposta_Regular[$Regional] = $consulta['total'];
+		  break;
+	      case "d": //ruim
+		  $Array_Total_resposta_Ruim[$Regional] = $consulta['total'];
+		  break;
+	      case "e": //pessimo
+		  $Array_Total_resposta_Pessimo[$Regional] = $consulta['total'];
+		  break;
+	      case "f": //nao
+		  $Array_Total_resposta_Nao[$Regional] = $consulta['total'];
+		  break;
+	  }
+
+	} //fim do while
+
+	foreach ($Array_Total_resposta_Otimo as $Regional => $TotalResposta) {
+	?>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT">
+		    <B><FONT COLOR="#000000">
+		      <? echo $Regional; ?></FONT>
+		    </B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Otimo[$Regional]; //otimo?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo  $Array_Total_resposta_Bom[$Regional]; //BOM; ?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Regular[$Regional]; //REGULAR?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		     <? echo $Array_Total_resposta_Ruim[$Regional]; //RUIM?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Pessimo[$Regional]; //PESSIMO?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Nao[$Regional]; //NAO?><BR></FONT>
+		</td>
+
+	</tr>
+<? } //fechamento foreach para pergunta 2 ?> 
+</table>
+<table>
+	<tr>
+	<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="LEFT" BGCOLOR="#0066CC"><B><FONT COLOR="#FFFFFF">PERGUNTA 3 E O PROFISSIONALISMO FOI:</FONT></B></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT FACE="Arial" COLOR="#000000">REGIONAIS</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">OTIMO</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">BOM</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">REGULAR</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">RUIM</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">PESSIMO</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">NAO ...</FONT></B>
+		</td>
+	</tr>
+	<? 
+	$sqlPesquisa = "SELECT regional, pergunta3, count(*) as total FROM `girpesquisaresposta` WHERE Semana LIKE $Semana_Escolhida AND Ano LIKE $Ano_Escolhida GROUP BY regional, pergunta3 ORDER BY regional";
+	$ResPesquisa = mysql_query($sqlPesquisa) or die("Falha no comando sqlPesquisa");
+	$TotregPesquisa = mysql_num_rows($ResPesquisa);//qtde de tecnicos que registraram execução, aqui contam o numero de execucoes independe se for mesmo tec
+	
+	$Array_Total_resposta_Otimo = Array();
+	$Array_Total_resposta_Bom = Array();
+	$Array_Total_resposta_Regular = Array();
+	$Array_Total_resposta_Ruim = Array();
+	$Array_Total_resposta_Pessimo = Array();
+	$Array_Total_resposta_Nao = Array();
+	
+	foreach ($Array_Regionais as $Regional => $NomeDaRegional) { //preenche com valor zero para todas as regionais em ambos os vetores, isso antes de contar
+	  $Array_Total_resposta_Otimo[$Regional] = 0;
+	  $Array_Total_resposta_Bom[$Regional] = 0;
+	  $Array_Total_resposta_Regular[$Regional] = 0;
+	  $Array_Total_resposta_Ruim[$Regional] = 0;
+	  $Array_Total_resposta_Pessimo[$Regional] = 0;
+	  $Array_Total_resposta_Nao[$Regional] = 0;
+	}
+	while($consulta = mysql_fetch_array($ResPesquisa)) {
+	  $Regional = $consulta['regional'];	  
+
+	  $i = $consulta['pergunta3'];
+	  switch ($i) {
+	      case "a": //ótimo
+		  $Array_Total_resposta_Otimo[$Regional] = $consulta['total'];
+		  break;
+	      case "b": //bom
+		  $Array_Total_resposta_Bom[$Regional] = $consulta['total'];
+		  break;
+	      case "c": //Regular
+		  $Array_Total_resposta_Regular[$Regional] = $consulta['total'];
+		  break;
+	      case "d": //ruim
+		  $Array_Total_resposta_Ruim[$Regional] = $consulta['total'];
+		  break;
+	      case "e": //pessimo
+		  $Array_Total_resposta_Pessimo[$Regional] = $consulta['total'];
+		  break;
+	      case "f": //nao
+		  $Array_Total_resposta_Nao[$Regional] = $consulta['total'];
+		  break;
+	  }
+
+	} //fim do while
+
+	foreach ($Array_Total_resposta_Otimo as $Regional => $TotalResposta) {
+	?>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT">
+		    <B><FONT COLOR="#000000">
+		      <? echo $Regional; ?></FONT>
+		    </B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Otimo[$Regional]; //otimo?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo  $Array_Total_resposta_Bom[$Regional]; //BOM; ?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Regular[$Regional]; //REGULAR?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		     <? echo $Array_Total_resposta_Ruim[$Regional]; //RUIM?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Pessimo[$Regional]; //PESSIMO?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Nao[$Regional]; //NAO?><BR></FONT>
+		</td>
+
+	</tr>
+<? } //fechamento foreach para pergunta 3 ?> 
+</table>
+
+<table>
+	<tr>
+	<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT" BGCOLOR="#0066CC"><B><FONT COLOR="#FFFFFF">PERGUNTA 4: A PRECISAO NA AVALIACAO E SOLUCAO DO PROBLEMA FOI:</FONT></B></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT FACE="Arial" COLOR="#000000">REGIONAIS</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">OTIMO</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">BOM</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">REGULAR</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">RUIM</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">PESSIMO</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">NAO ...</FONT></B>
+		</td>
+	</tr>
+	<? 
+	$sqlPesquisa = "SELECT regional, pergunta4, count(*) as total FROM `girpesquisaresposta` GROUP BY regional, pergunta4 ORDER BY regional";
+	$ResPesquisa = mysql_query($sqlPesquisa) or die("Falha no comando sqlPesquisa");
+	$TotregPesquisa = mysql_num_rows($ResPesquisa);//qtde de tecnicos que registraram execução, aqui contam o numero de execucoes independe se for mesmo tec
+	
+	$Array_Total_resposta_Otimo = Array();
+	$Array_Total_resposta_Bom = Array();
+	$Array_Total_resposta_Regular = Array();
+	$Array_Total_resposta_Ruim = Array();
+	$Array_Total_resposta_Pessimo = Array();
+	$Array_Total_resposta_Nao = Array();
+	
+	foreach ($Array_Regionais as $Regional => $NomeDaRegional) { //preenche com valor zero para todas as regionais em ambos os vetores, isso antes de contar
+	  $Array_Total_resposta_Otimo[$Regional] = 0;
+	  $Array_Total_resposta_Bom[$Regional] = 0;
+	  $Array_Total_resposta_Regular[$Regional] = 0;
+	  $Array_Total_resposta_Ruim[$Regional] = 0;
+	  $Array_Total_resposta_Pessimo[$Regional] = 0;
+	  $Array_Total_resposta_Nao[$Regional] = 0;
+	}
+	while($consulta = mysql_fetch_array($ResPesquisa)) {
+	  $Regional = $consulta['regional'];	  
+
+	  $i = $consulta['pergunta4'];
+	  switch ($i) {
+	      case "a": //ótimo
+		  $Array_Total_resposta_Otimo[$Regional] = $consulta['total'];
+		  break;
+	      case "b": //bom
+		  $Array_Total_resposta_Bom[$Regional] = $consulta['total'];
+		  break;
+	      case "c": //Regular
+		  $Array_Total_resposta_Regular[$Regional] = $consulta['total'];
+		  break;
+	      case "d": //ruim
+		  $Array_Total_resposta_Ruim[$Regional] = $consulta['total'];
+		  break;
+	      case "e": //pessimo
+		  $Array_Total_resposta_Pessimo[$Regional] = $consulta['total'];
+		  break;
+	      case "f": //nao
+		  $Array_Total_resposta_Nao[$Regional] = $consulta['total'];
+		  break;
+	  }
+
+	} //fim do while
+
+	foreach ($Array_Total_resposta_Otimo as $Regional => $TotalResposta) {
+	?>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT">
+		    <B><FONT COLOR="#000000">
+		      <? echo $Regional; ?></FONT>
+		    </B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Otimo[$Regional]; //otimo?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo  $Array_Total_resposta_Bom[$Regional]; //BOM; ?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Regular[$Regional]; //REGULAR?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		     <? echo $Array_Total_resposta_Ruim[$Regional]; //RUIM?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Pessimo[$Regional]; //PESSIMO?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Nao[$Regional]; //NAO?><BR></FONT>
+		</td>
+
+	</tr>
+<? } //fechamento foreach para pergunta 4 ?> 
+</table>
+
+<table>
+	<tr>
+	<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT" BGCOLOR="#0066CC"><B><FONT COLOR="#FFFFFF">PERGUNTA 5: E O ESCLARECIMENTO DE DUVIDAS? FOI:</FONT></B></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT FACE="Arial" COLOR="#000000">REGIONAIS</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">OTIMO</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">BOM</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">REGULAR</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">RUIM</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">PESSIMO</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">NAO ...</FONT></B>
+		</td>
+	</tr>
+	<? 
+	$sqlPesquisa = "SELECT regional, pergunta5, count(*) as total FROM `girpesquisaresposta` WHERE Semana LIKE $Semana_Escolhida AND Ano LIKE $Ano_Escolhida GROUP BY regional, pergunta5 ORDER BY regional";
+	$ResPesquisa = mysql_query($sqlPesquisa) or die("Falha no comando sqlPesquisa");
+	$TotregPesquisa = mysql_num_rows($ResPesquisa);//qtde de tecnicos que registraram execução, aqui contam o numero de execucoes independe se for mesmo tec
+	
+	$Array_Total_resposta_Otimo = Array();
+	$Array_Total_resposta_Bom = Array();
+	$Array_Total_resposta_Regular = Array();
+	$Array_Total_resposta_Ruim = Array();
+	$Array_Total_resposta_Pessimo = Array();
+	$Array_Total_resposta_Nao = Array();
+	
+	foreach ($Array_Regionais as $Regional => $NomeDaRegional) { //preenche com valor zero para todas as regionais em ambos os vetores, isso antes de contar
+	  $Array_Total_resposta_Otimo[$Regional] = 0;
+	  $Array_Total_resposta_Bom[$Regional] = 0;
+	  $Array_Total_resposta_Regular[$Regional] = 0;
+	  $Array_Total_resposta_Ruim[$Regional] = 0;
+	  $Array_Total_resposta_Pessimo[$Regional] = 0;
+	  $Array_Total_resposta_Nao[$Regional] = 0;
+	}
+	while($consulta = mysql_fetch_array($ResPesquisa)) {
+	  $Regional = $consulta['regional'];	  
+
+	  $i = $consulta['pergunta5'];
+	  switch ($i) {
+	      case "a": //ótimo
+		  $Array_Total_resposta_Otimo[$Regional] = $consulta['total'];
+		  break;
+	      case "b": //bom
+		  $Array_Total_resposta_Bom[$Regional] = $consulta['total'];
+		  break;
+	      case "c": //Regular
+		  $Array_Total_resposta_Regular[$Regional] = $consulta['total'];
+		  break;
+	      case "d": //ruim
+		  $Array_Total_resposta_Ruim[$Regional] = $consulta['total'];
+		  break;
+	      case "e": //pessimo
+		  $Array_Total_resposta_Pessimo[$Regional] = $consulta['total'];
+		  break;
+	      case "f": //nao
+		  $Array_Total_resposta_Nao[$Regional] = $consulta['total'];
+		  break;
+	  }
+
+	} //fim do while
+
+	foreach ($Array_Total_resposta_Otimo as $Regional => $TotalResposta) {
+	?>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT">
+		    <B><FONT COLOR="#000000">
+		      <? echo $Regional; ?></FONT>
+		    </B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Otimo[$Regional]; //otimo?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo  $Array_Total_resposta_Bom[$Regional]; //BOM; ?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Regular[$Regional]; //REGULAR?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		     <? echo $Array_Total_resposta_Ruim[$Regional]; //RUIM?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Pessimo[$Regional]; //PESSIMO?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Nao[$Regional]; //NAO?><BR></FONT>
+		</td>
+
+	</tr>
+<? } //fechamento foreach para pergunta 5 ?> 
+</table>
+
+<table>
+	<tr>
+	<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT" BGCOLOR="#0066CC"><B><FONT COLOR="#FFFFFF">PERGUNTA 6: A FACILIDADE DE ABRIR O CHAMADO FOI:</FONT></B></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT FACE="Arial" COLOR="#000000">REGIONAIS</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">OTIMO</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">BOM</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">REGULAR</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">RUIM</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">PESSIMO</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">NAO ...</FONT></B>
+		</td>
+	</tr>
+	<? 
+	$sqlPesquisa = "SELECT regional, pergunta6, count(*) as total FROM `girpesquisaresposta` WHERE Semana LIKE $Semana_Escolhida AND Ano LIKE $Ano_Escolhida GROUP BY regional, pergunta6 ORDER BY regional";
+	$ResPesquisa = mysql_query($sqlPesquisa) or die("Falha no comando sqlPesquisa");
+	$TotregPesquisa = mysql_num_rows($ResPesquisa);//qtde de tecnicos que registraram execução, aqui contam o numero de execucoes independe se for mesmo tec
+	
+	$Array_Total_resposta_Otimo = Array();
+	$Array_Total_resposta_Bom = Array();
+	$Array_Total_resposta_Regular = Array();
+	$Array_Total_resposta_Ruim = Array();
+	$Array_Total_resposta_Pessimo = Array();
+	$Array_Total_resposta_Nao = Array();
+	
+	foreach ($Array_Regionais as $Regional => $NomeDaRegional) { //preenche com valor zero para todas as regionais em ambos os vetores, isso antes de contar
+	  $Array_Total_resposta_Otimo[$Regional] = 0;
+	  $Array_Total_resposta_Bom[$Regional] = 0;
+	  $Array_Total_resposta_Regular[$Regional] = 0;
+	  $Array_Total_resposta_Ruim[$Regional] = 0;
+	  $Array_Total_resposta_Pessimo[$Regional] = 0;
+	  $Array_Total_resposta_Nao[$Regional] = 0;
+	}
+	while($consulta = mysql_fetch_array($ResPesquisa)) {
+	  $Regional = $consulta['regional'];	  
+
+	  $i = $consulta['pergunta6'];
+	  switch ($i) {
+	      case "a": //ótimo
+		  $Array_Total_resposta_Otimo[$Regional] = $consulta['total'];
+		  break;
+	      case "b": //bom
+		  $Array_Total_resposta_Bom[$Regional] = $consulta['total'];
+		  break;
+	      case "c": //Regular
+		  $Array_Total_resposta_Regular[$Regional] = $consulta['total'];
+		  break;
+	      case "d": //ruim
+		  $Array_Total_resposta_Ruim[$Regional] = $consulta['total'];
+		  break;
+	      case "e": //pessimo
+		  $Array_Total_resposta_Pessimo[$Regional] = $consulta['total'];
+		  break;
+	      case "f": //nao
+		  $Array_Total_resposta_Nao[$Regional] = $consulta['total'];
+		  break;
+	  }
+
+	} //fim do while
+
+	foreach ($Array_Total_resposta_Otimo as $Regional => $TotalResposta) {
+	?>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT">
+		    <B><FONT COLOR="#000000">
+		      <? echo $Regional; ?></FONT>
+		    </B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Otimo[$Regional]; //otimo?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo  $Array_Total_resposta_Bom[$Regional]; //BOM; ?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Regular[$Regional]; //REGULAR?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		     <? echo $Array_Total_resposta_Ruim[$Regional]; //RUIM?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Pessimo[$Regional]; //PESSIMO?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Nao[$Regional]; //NAO?><BR></FONT>
+		</td>
+
+	</tr>
+<? } //fechamento foreach para pergunta 6 ?> 
+</table>
+
+
+<table>
+	<tr>
+	<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT" BGCOLOR="#0066CC"><B><FONT COLOR="#FFFFFF">PERGUNTA 7: E O TEMPO DE SOLUÇÃO DO PROBLEMA FOI:</FONT></B></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT FACE="Arial" COLOR="#000000">REGIONAIS</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">OTIMO</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">BOM</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">REGULAR</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">RUIM</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">PESSIMO</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">NAO ...</FONT></B>
+		</td>
+	</tr>
+	<? 
+	$sqlPesquisa = "SELECT regional, pergunta7, count(*) as total FROM `girpesquisaresposta` WHERE Semana LIKE $Semana_Escolhida AND Ano LIKE $Ano_Escolhida GROUP BY regional, pergunta7 ORDER BY regional";
+	$ResPesquisa = mysql_query($sqlPesquisa) or die("Falha no comando sqlPesquisa");
+	$TotregPesquisa = mysql_num_rows($ResPesquisa);//qtde de tecnicos que registraram execução, aqui contam o numero de execucoes independe se for mesmo tec
+	
+	$Array_Total_resposta_Otimo = Array();
+	$Array_Total_resposta_Bom = Array();
+	$Array_Total_resposta_Regular = Array();
+	$Array_Total_resposta_Ruim = Array();
+	$Array_Total_resposta_Pessimo = Array();
+	$Array_Total_resposta_Nao = Array();
+	
+	foreach ($Array_Regionais as $Regional => $NomeDaRegional) { //preenche com valor zero para todas as regionais em ambos os vetores, isso antes de contar
+	  $Array_Total_resposta_Otimo[$Regional] = 0;
+	  $Array_Total_resposta_Bom[$Regional] = 0;
+	  $Array_Total_resposta_Regular[$Regional] = 0;
+	  $Array_Total_resposta_Ruim[$Regional] = 0;
+	  $Array_Total_resposta_Pessimo[$Regional] = 0;
+	  $Array_Total_resposta_Nao[$Regional] = 0;
+	}
+	while($consulta = mysql_fetch_array($ResPesquisa)) {
+	  $Regional = $consulta['regional'];	  
+
+	  $i = $consulta['pergunta7'];
+	  switch ($i) {
+	      case "a": //ótimo
+		  $Array_Total_resposta_Otimo[$Regional] = $consulta['total'];
+		  break;
+	      case "b": //bom
+		  $Array_Total_resposta_Bom[$Regional] = $consulta['total'];
+		  break;
+	      case "c": //Regular
+		  $Array_Total_resposta_Regular[$Regional] = $consulta['total'];
+		  break;
+	      case "d": //ruim
+		  $Array_Total_resposta_Ruim[$Regional] = $consulta['total'];
+		  break;
+	      case "e": //pessimo
+		  $Array_Total_resposta_Pessimo[$Regional] = $consulta['total'];
+		  break;
+	      case "f": //nao
+		  $Array_Total_resposta_Nao[$Regional] = $consulta['total'];
+		  break;
+	  }
+
+	} //fim do while
+
+	foreach ($Array_Total_resposta_Otimo as $Regional => $TotalResposta) {
+	?>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT">
+		    <B><FONT COLOR="#000000">
+		      <? echo $Regional; ?></FONT>
+		    </B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Otimo[$Regional]; //otimo?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo  $Array_Total_resposta_Bom[$Regional]; //BOM; ?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Regular[$Regional]; //REGULAR?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		     <? echo $Array_Total_resposta_Ruim[$Regional]; //RUIM?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Pessimo[$Regional]; //PESSIMO?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Nao[$Regional]; //NAO?><BR></FONT>
+		</td>
+
+	</tr>
+<? } //fechamento foreach para pergunta 7 ?> 
+</table>
+
+<table>
+	<tr>
+	<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT" BGCOLOR="#0066CC"><B><FONT COLOR="#FFFFFF">PERGUNTA 8</FONT></B></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT FACE="Arial" COLOR="#000000">REGIONAIS</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">OTIMO</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">BOM</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">REGULAR</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c"  ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">RUIM</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">PESSIMO</FONT></B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER" VALIGN=MIDDLE BGCOLOR="#C0C0C0">
+		    <B><FONT COLOR="#000000">NAO ...</FONT></B>
+		</td>
+	</tr>
+	<? 
+	$sqlPesquisa = "SELECT regional, pergunta8, count(*) as total FROM `girpesquisaresposta` WHERE Semana LIKE $Semana_Escolhida AND Ano LIKE $Ano_Escolhida GROUP BY regional, pergunta8 ORDER BY regional";
+	$ResPesquisa = mysql_query($sqlPesquisa) or die("Falha no comando sqlPesquisa");
+	$TotregPesquisa = mysql_num_rows($ResPesquisa);//qtde de tecnicos que registraram execução, aqui contam o numero de execucoes independe se for mesmo tec
+	
+	$Array_Total_resposta_Otimo = Array();
+	$Array_Total_resposta_Bom = Array();
+	$Array_Total_resposta_Regular = Array();
+	$Array_Total_resposta_Ruim = Array();
+	$Array_Total_resposta_Pessimo = Array();
+	$Array_Total_resposta_Nao = Array();
+	
+	foreach ($Array_Regionais as $Regional => $NomeDaRegional) { //preenche com valor zero para todas as regionais em ambos os vetores, isso antes de contar
+	  $Array_Total_resposta_Otimo[$Regional] = 0;
+	  $Array_Total_resposta_Bom[$Regional] = 0;
+	  $Array_Total_resposta_Regular[$Regional] = 0;
+	  $Array_Total_resposta_Ruim[$Regional] = 0;
+	  $Array_Total_resposta_Pessimo[$Regional] = 0;
+	  $Array_Total_resposta_Nao[$Regional] = 0;
+	}
+	while($consulta = mysql_fetch_array($ResPesquisa)) {
+	  $Regional = $consulta['regional'];	  
+
+	  $i = $consulta['pergunta8'];
+	  switch ($i) {
+	      case "a": //ótimo
+		  $Array_Total_resposta_Otimo[$Regional] = $consulta['total'];
+		  break;
+	      case "b": //bom
+		  $Array_Total_resposta_Bom[$Regional] = $consulta['total'];
+		  break;
+	      case "c": //Regular
+		  $Array_Total_resposta_Regular[$Regional] = $consulta['total'];
+		  break;
+	      case "d": //ruim
+		  $Array_Total_resposta_Ruim[$Regional] = $consulta['total'];
+		  break;
+	      case "e": //pessimo
+		  $Array_Total_resposta_Pessimo[$Regional] = $consulta['total'];
+		  break;
+	      case "f": //nao
+		  $Array_Total_resposta_Nao[$Regional] = $consulta['total'];
+		  break;
+	  }
+
+	} //fim do while
+
+	foreach ($Array_Total_resposta_Otimo as $Regional => $TotalResposta) {
+	?>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="LEFT">
+		    <B><FONT COLOR="#000000">
+		      <? echo $Regional; ?></FONT>
+		    </B>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Otimo[$Regional]; //otimo?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo  $Array_Total_resposta_Bom[$Regional]; //BOM; ?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Regular[$Regional]; //REGULAR?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		     <? echo $Array_Total_resposta_Ruim[$Regional]; //RUIM?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Pessimo[$Regional]; //PESSIMO?><BR></FONT>
+		</td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" ALIGN="CENTER"><FONT COLOR="#000000">
+		    <? echo $Array_Total_resposta_Nao[$Regional]; //NAO?><BR></FONT>
+		</td>
+
+	</tr>
+<? } //fechamento foreach para pergunta 8 ?> 
+</table>
+</table>
+</table>

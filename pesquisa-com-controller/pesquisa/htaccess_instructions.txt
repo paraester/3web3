@@ -1,0 +1,13 @@
+# How to enable mod_rewrite and htaccess on Apache 2
+sudo a2enmod rewrite
+
+# Change the Override configuration on
+# /etc/apache2/apache2.conf
+# inside <Directory /var/www>, change
+AllowOverride All
+
+# Restart Apache
+sudo service apache2 restart
+
+# .htaccess should work now
+# It is a hidden file in this folder

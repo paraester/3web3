@@ -1,0 +1,104 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Language" content="pt-br"><?/* <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">      */?>
+		<link rel="shortcut icon" href="./favicon.ico" />
+		<link rel="stylesheet" type="text/css" href="./css/geral.css"><? /*consult-semanas*/?>
+		<link href="./css/estilo.css" type="text/css" rel="stylesheet">
+		<title>PESQUISA</title>
+
+	</head>
+<body style="background-color: #cccccc" link="#FF0000" vlink="#FF0000" alink="#FF0000" style="text-align: center">
+<center>
+<br><br>
+<table border="0" width="85%" cellspacing="0" cellpadding="0">
+	<tr>
+			<td width="9" height="9" bgcolor="red">
+				<img src="../imgs/fundo_cinza_te_index.jpg" height="9" width="9">
+			</td>
+			<td width="100%" height="9" background="../imgs/fundo_cinza_t_index.jpg">
+			</td>
+			<td width="9" height="9">
+				<img src="../imgs/fundo_cinza_td_index.jpg" height="9" width="9">
+			</td>
+	</tr>
+	<tr>
+	<td background="../imgs/fundo_cinza_e_index.jpg" width="9">&nbsp;
+	</td>
+	<td>
+<? //acabamento tabela?>
+<?
+/* COMENTARIO PARA ADMLOCAL
+<table bgcolor="#f3f2f0" border="0" cellpadding="0" cellspacing="0" width="100%"
+ height="20%" background="#FF0000"> 
+ 
+ TROQUEI PELO ABAIXO
+*/
+?>
+<table bgcolor="#f3f2f0" border="0" cellpadding="0" cellspacing="0" width="100%"
+ background="#FF0000"> 
+<tbody>
+    	<tr bordercolor="#FFFFFF" bgcolor="#f3f2f0">
+<?/*
+      <td height="54" align="left">
+      			&nbsp;&nbsp;
+      			<?//<img src="./css/logo_celepar_horizontal_p.jpg" height="54">
+		?>
+		</td>
+*/
+?>
+      		<td><center>
+			<font face="Arial" size="4"><p class="maiores">
+			<? echo utf8_decode("CONSULTA    QUALIDADE    ATENDIMENTO    CLIENTE");?></p>
+			</font></center>
+		</td>
+    	</tr>
+	<tr bordercolor="#FFFFFF" class="titulos" bgcolor="#BEBEBE">
+		<td height="10%">
+		</td>
+	</tr>
+ 	</tbody>
+</table> 
+
+<? // inicio da tabelona principal ?>
+<table width="100%" border="0" bgcolor="#F7F7F7" cellspacing="0" cellpadding="0" bordercolor="#FFE2D5" width="100%" height="70%" >
+	<tr>
+	    <td valign="top" align="center" width="100%">
+		    <?php  include "./quantidades-pergunta1.php";?>
+	    </td>
+	</tr>
+</table>
+<? // fim da tabelona ?>
+
+	<? //fora da tabela principal ?>
+	<center>
+<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0"  width="100%" height="25"> 
+<tr>
+	<td bgcolor="#BEBEBE" width="0"><p align="right">
+	<span style="font-size: 7pt">&nbsp;&nbsp;&nbsp; Melhor Visualizado com<i>
+		<b>
+			<a href="http://www.mozilla.com/en-US" style="color:black; text-decoration:none;">Mozilla-Firefox</a>&nbsp;&nbsp;</i>
+		</b>
+	</span>
+	</td>
+</tr>
+</table>
+
+<? //acabamento tabela?>
+</td>
+<td background="../imgs/fundo_cinza_d_index.jpg" width="9" height="80">&nbsp;</td>
+</tr>
+<tr>
+		<td width="9" height="9">
+			<img src="../imgs/fundo_cinza_re_index.jpg" height="9" width="9">
+		</td>
+		<td width="100%" height="9" background="../imgs/fundo_cinza_r_index.jpg">
+		</td>
+		<td width="9" height="9">
+			<img src="../imgs/fundo_cinza_rd_index.jpg" height="9" width="9">
+		</td>
+</tr>
+</table>
+<br><br>
+</center>
+</body>
+</html>

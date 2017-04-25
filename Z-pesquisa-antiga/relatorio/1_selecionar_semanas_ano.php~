@@ -1,0 +1,119 @@
+<?
+include '../conectbd.php';
+$SqlListando = "SELECT DISTINCT Semana, Ano FROM pesquisaresposta ORDER BY Semana DESC";
+$ResListando = mysql_query($SqlListando) or die("Falha no comando SqlListando");
+$TotregListando = mysql_num_rows($ResListando);
+//$consultaListando = mysql_fetch_array($ResListando);
+
+$SqlListandoAno = "SELECT DISTINCT Ano FROM pesquisaresposta ORDER BY Ano DESC";
+$ResListandoAno = mysql_query($SqlListandoAno) or die("Falha no comando SqlListando");
+$TotregListandoAno = mysql_num_rows($ResListandoAno);
+
+//$Semana_Escolhida=$consultaListando['Semana'];
+//$Ano_Escolhida=$consultaListando['Semana'];
+?>
+<br>
+<table border="0" width="85%" cellspacing="0" cellpadding="0">
+	<tr>
+			<td width="9" height="9">
+				<img src="../imgs/fundo_cinza_te.jpg" height="9" width="9">
+			</td>
+			<td width="100%" height="9" background="../imgs/fundo_cinza_t.jpg">
+			</td>
+			<td width="9" height="9">
+				<img src="../imgs/fundo_cinza_td.jpg" height="9" width="9">
+			</td>
+	</tr>
+	<tr>
+	<td background="../imgs/fundo_cinza_e.jpg" width="9">&nbsp;
+	</td>
+	<td>
+<? //acabamento tabela?><center>
+<table align="right" bgcolor="#F7F7F7" border="0" bordercolor="#ffffff" cellpadding="0" cellspacing="0" width="99%">
+	<tr>
+	<td>
+		<table bgcolor="#C0C0C0" border="0" cellpadding="3" cellspacing="0" width="100%" height="10">
+			<div align="center"><br>
+				<tr>
+					<td bgcolor="#C0C0C0" width="0" height="0" class="titulos" >
+						<font color="FFFFE0" face="Arial" style="font-size: 12pt">&nbsp;<center>
+						TABELA QUANTIDADES POR REGIONAL - ANALISE TODAS AS QUESTOES
+						<?
+							//echo utf8_decode("&nbsp;RESPOSTAS PESQUISA DE SATISFAÇÃO - TABELA COMPLETA");
+						?>&nbsp;</center>
+						</font>
+					</td>
+				</tr>
+			</div>
+		</table><br>
+
+<center>
+<p align="center">&nbsp;</p> <? //tabela_pesquisa_respostas.php ?>
+<table border="0" bordercolor="#C0C0C0" bgcolor="#f0f0f0" cellpadding="5" cellspacing="0" width="100%" height="20" >
+<form method="POST" ACTION="./quantidades-pergunta1.php" name="formulario" >
+  <tr><? //<a href="#" class="itens" onclick="javascript:window.open('?pg=onalpoOonIidiIiTDrRrMoOonasSscunidSTRAongdfgdfgdunidYtu','RESULTADOS','width=799,height=680,top=5,left=35,scrollbars=yes')" target="_top" onmouseover="window.status='LISTAR RESULTADOS PESQUISA';return true">
+  //ACTION="?pg=onalpoOonIidiIiTDrRrMoOonasSscunidSTRAongdfgdfgduniYtu"
+  ?>
+    <td height="45" align="center">
+      <font face="Arial"  style="font-size: 10pt;">&nbsp;SELECIONE A SEMANA
+	<select  title="Escolha a semana"  name="semana" size=1>
+<?  
+	  while($consultaListando = mysql_fetch_array($ResListando)) 
+	    {
+	      echo "\t\t<option value=";
+	      echo  trim($consultaListando['Semana']);
+	      echo ">";
+	      echo  trim($consultaListando['Semana']);
+	      echo "</option>\n";
+	      }
+?>
+	</select>
+      </font>
+    </td>
+    <td height="45" align="center">
+      <font face="Arial"  style="font-size: 10pt;">&nbsp;SELECIONE O ANO
+	<select  title="Escolha o Ano"  name="ano" size=1>
+<? 					 
+	  while($consultaListandoAno = mysql_fetch_array($ResListandoAno)) 
+	    {
+	      echo "\t\t<option value=";
+	      echo  trim($consultaListandoAno['Ano']);
+	      echo ">";
+	      echo  trim($consultaListandoAno['Ano']);
+	      echo "</option>\n";
+	      }
+?>
+	</select>
+      </font>
+    </td>
+  </tr>
+</table>
+</center>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type=submit value="LISTAR RESPOSTAS" name="submit2" 
+style="font-weight: bold; color: #FFFFFF; font-size: 12; font-family: Arial; 
+letter-spacing: 3pt; text-transform: uppercase; border: 4px outset #BEBEBE; 
+padding-left: 4px; padding-right: 4px; 1px; padding-bottom: 1px; background-color: #BEBEBE" >
+</p>
+</form>
+<p></p>
+</table></center>
+
+
+<? //acabamento tabela?>
+
+	</td>
+	<td background="../imgs/fundo_cinza_d.jpg" width="9" height="80">&nbsp;</td>
+	</tr>
+	<tr>
+			<td width="9" height="9">
+				<img src="../imgs/fundo_cinza_re.jpg" height="9" width="9">
+			</td>
+			<td width="100%" height="9" background="../imgs/fundo_cinza_r.jpg">
+			</td>
+			<td width="9" height="9">
+				<img src="../imgs/fundo_cinza_rd.jpg" height="9" width="9">
+			</td>
+	</tr>
+</table>
+<br>

@@ -1,0 +1,86 @@
+/* CSS Reset */
+html, body, div, form, fieldset, legend, label {
+	margin: 0;
+	padding: 0;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+th, td {
+	text-align: left;
+	vertical-align: top;
+}
+h1, h2, h3, h4, h5, h6, th, td, caption {
+	font-weight:normal;
+}
+img {
+	border: 0;
+}
+.body {
+	PADDING-RIGHT: 0px;
+	TEXT-ALIGN: left;
+	font:10px, Arial, Helvetica, sans-serif;
+}
+#wrapper {
+	width:100%;
+	float:left;
+	background:#c0c0c0;
+}
+.textos {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #999999;
+	font-weight: bold;
+}
+.botao {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	background-color: #cccccc;
+	border: 1px solid #999999;
+	color: #666666;
+}
+p.titulos {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: #666666;
+}
+p.letreiros {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #999999;
+}
+.fundo {
+	background-image: url(./imgs/fundo.bmp);
+}
+p.maiores {
+	font-family: Arial;
+	font-size: 22px;
+	font-weight: bold;
+	color: #999988;
+}
+.listas {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #000000;
+}
+
+.borda    {
+border-style: solid;
+border-width: thin;
+border-color: #000000
+}
+e {border: thick solid black;}
+
+.style1 {color: #FFFFFF}
+.style2 {font-size: 24px}
+.style4 {
+	font-size: 24px;
+	font-weight: bold;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: #999999;
+}
+
+

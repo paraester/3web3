@@ -1,0 +1,76 @@
+ROTEIRO
+
+MUDAR EM Configuration -> Geral.php $banco
+<?php
+$banco = [
+    'driver' => 'mysql',
+    'servidor' => 'localhost',
+    'porta' => '3306',
+    'banco' => 'eleicao',
+    'usuario' => 'web3',
+    'senha' => 'web',
+];
+
+
+CRIAR NO BD O BANCO E AS TABELAS. SALVAR NA PASTA DATABASE
+
+
+NA RAIZ MODIFICAR O ARQUIVO .htaccess COLOCAR O NOME DA PASTA RAIZ
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Se não for para a pasta pública, executa o index.php
+    RewriteCond %{REQUEST_FILENAME} !prova_eleicao/Public/
+    RewriteRule ^ index.php
+</IfModule>
+
+PARA ADICIONAR UMA SESSÃO
+CRIAR O ARQUIVO SESSAO EM FRAMEWORK
+CRIAR UMA PASTA login EM view COM UM ARQUIVO CHAMADO create.php
+
+NO ARQUIVO rotas.php ADD A ROTA
+
+    '/login' => [
+        'GET' => '\Controller\LoginController#create',// vamos cadastrar um novo usuario
+        'POST' => '\Controller\LoginController#store',//loga o usuario
+        'DELETE' => '\Controller\LoginController#destroy',//esta vindo de index.php mensagens - Botao sair
+    ],
+
+EM controller ADD O ARQUIVO logincontroller.php
+CRIE A TABELA USUARIOS (VEJA OS CAMPOS QUE VC PRECISARÁ)
+
+
+CREATE TABLE `usuarios` (
+  `id` int(11) NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `senha` char(60) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `usuarios` (`id`, `email`, `senha`) VALUES
+(1, 'web3', '$2y$10$pDJNgAMh66s1ZWHECi9u6e3MY7Kj0iYUwTzRhSyrAI199.ooxWQna'),
+(2, 'ana', '$2y$10$pDJNgAMh66s1ZWHECi9u6e3MY7Kj0iYUwTzRhSyrAI199.ooxWQna');
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id`);
+
+
+ADD NA CLASSE CONTROLLER O MÉTODO index - no caso CandidatoController.php
+
+método index irá chamar o $this->verificarLogado();
+
+CRIAR O OBJETO usuario em MODEL
+
+
+PARA ADICIONAR UMA IMAGEM - UPLOAD
+
+
+
+
+view->usuario-create.php
+            <form action="<?= URL_RAIZ . 'usuarios' ?>" method="post" class="margin-bottom" enctype="multipart/form-data">
+            
+                <div class="form-group">
+                    <label for="foto">Foto</label>
+                    <input id="foto" name="foto" class="form-control" type="file">
+                </div>
+                
+                

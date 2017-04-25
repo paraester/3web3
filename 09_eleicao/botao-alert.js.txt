@@ -1,0 +1,39 @@
+
+
+    Inline:
+
+    <a href="deletelink" onclick="return confirm('Are you sure?')">Delete</a>
+
+    In a function:
+
+    <a href="deletelink" onclick="return checkDelete()">Delete</a>
+
+    and then put this in <head>:
+
+    <script language="JavaScript" type="text/javascript">
+    function checkDelete(){
+        return confirm('Are you sure?');
+    }
+    </script>
+
+    This one has more work, but less file size if the list is long.
+
+    With jQuery:
+
+    <a href="deletelink" class="delete">Delete</a>
+
+    And put this in <head>:
+
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script language="JavaScript" type="text/javascript">
+    $(document).ready(function(){
+        $("a.delete").click(function(e){
+            if(!confirm('Are you sure?')){
+                e.preventDefault();
+                return false;
+            }
+            return true;
+        });
+    });
+    </script>
+
