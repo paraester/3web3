@@ -9,7 +9,7 @@ class ImagemUpload
 {
     const TIPOS_PERMITIDOS = [
         IMAGETYPE_JPEG,
-        // IMAGETYPE_PNG,
+        IMAGETYPE_PNG,
         // IMAGETYPE_GIF
     ];
 

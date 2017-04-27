@@ -2,7 +2,6 @@
 /*
     Os caminhos sempre terminam com '/'
 */
-
 define('APLICACAO_NOME', 'Chat Online');
 define('APLICACAO_RAIZ', dirname(__DIR__) . '/');
 define('APLICACAO_VIEW', APLICACAO_RAIZ . 'View/');

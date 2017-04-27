@@ -63,7 +63,8 @@ CRIAR O OBJETO usuario em MODEL
 PARA ADICIONAR UMA IMAGEM - UPLOAD
 
 
-
+Framework->ImagemUpload.php 
+Alterar as Permissões na pasta Public/img
 
 view->usuario-create.php
             <form action="<?= URL_RAIZ . 'usuarios' ?>" method="post" class="margin-bottom" enctype="multipart/form-data">
@@ -73,4 +74,40 @@ view->usuario-create.php
                     <input id="foto" name="foto" class="form-control" type="file">
                 </div>
                 
+Configuration-rotas.php
+							'/usuarios' => [
+								'POST' => '\Controller\UsuarioController#store',
+							],
+Controller->UsuarioController.php
+							<?php
+							namespace Controller;
+							use \Model\Usuario;
+							const VIEW_USUARIO = APLICACAO_VIEW . 'usuarios/';
+							class UsuarioController
+							{
+								public function create()
+								{
+									require VIEW_USUARIO . 'create.php';
+								}
+
+								public function store()
+								{
+									$foto = array_key_exists('foto', $_FILES) ? $_FILES['foto'] : null;
+									$usuario = new Usuario(
+										$_POST['email'],
+										$_POST['senha'],
+										$foto
+									);
+									$usuario->save();
+									header('Location: ' . URL_RAIZ . 'usuarios/sucesso');
+									exit;
+								}
+								public function sucesso()
+								{
+									require VIEW_USUARIO . 'sucesso.php';
+								}
+							}
+Model->Usuario.php -----> Objeto
+
+
                 

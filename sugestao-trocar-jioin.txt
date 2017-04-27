@@ -1,0 +1,4 @@
+if this->usuario==null
+this->usuario = Usuario::finId($this->usuarioid);
+
+return $this->usuario;

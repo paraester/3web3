@@ -3,7 +3,7 @@ namespace Model;
 
 use \PDO;
 use \Framework\BancoDeDados;
-
+use \Framework\ImagemCandidato;
 class Candidato
 {
     const BUSCAR_TODOS = 'SELECT * FROM candidatos ORDER BY nome';
@@ -17,25 +17,47 @@ class Candidato
     private $descricao;
     private $votos;
     private $id_candidato;
-    private $eleitor;
+    private $foto;
 
     public function __construct(
         $nome,
         $descricao,
         $id = -1,
-        $votos = 0
+        $votos = 0,
+        $fotos = null
+
     ) {
         $this->nome = $nome;
         $this->descricao = $descricao;
         $this->id = $id;
         $this->votos = $votos;
+        $this->foto = $fotos;
+    }
+    public function getImagem()
+    {
+        $imagemNome = "{$this->id}.jpg";
+        if (!ImagemCandidato::existe($imagemNome)) {
+            $imagemNome = "padrao.jpg";
+        }
+        return $imagemNome;
+    }
+
+    public function salvarImagem()
+    {
+        if (ImagemCandidato::isValida($this->foto)) {
+            $nomeCompleto = APLICACAO_RAIZ . "Public/img/Candidato/{$this->id}.jpg";
+            ImagemCandidato::salvar($this->foto, $nomeCompleto);
+        }
     }
 
     public function setNome($valor)
     {
         $this->nome = $valor;
     }
-
+    public function setImagem($valor)
+    {
+        $this->foto = $valor;
+    }
     public function setDescricao($valor)
     {
         $this->descricao = $valor;
@@ -94,8 +116,10 @@ class Candidato
     {
         if ($this->id == -1) {
             $this->inserir();
+            $this->salvarImagem();
         } else {
             $this->atualizar();
+            $this->salvarImagem();
         }
     }
     public function inserirEleitor($id,$eleitor)
@@ -104,6 +128,7 @@ class Candidato
         $comando->bindParam(1, $this->$id, PDO::PARAM_INT);
         $comando->bindParam(2, $this->$eleitor, PDO::PARAM_STR, 255);
         $comando->execute();
+        print_r($comando->errorInfo());
     }
     public function inserir()
     {
@@ -111,6 +136,8 @@ class Candidato
         $comando->bindParam(1, $this->nome, PDO::PARAM_STR, 255);
         $comando->bindParam(2, $this->descricao, PDO::PARAM_STR, 255);
         $comando->execute();
+        print_r($comando->errorInfo());
+
     }
 
     public function atualizar()
@@ -121,6 +148,7 @@ class Candidato
         $comando->bindParam(3, $this->votos, PDO::PARAM_INT);
         $comando->bindParam(4, $this->id, PDO::PARAM_INT);
         $comando->execute();
+        print_r($comando->errorInfo());
     }
 
     public static function all()

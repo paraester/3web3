@@ -15,4 +15,5 @@ define('URL_PUBLIC', URL_RAIZ . 'Public/');
 define('URL_CSS', URL_PUBLIC . 'css/');
 define('URL_FONTS', URL_PUBLIC . 'fonts/');
 define('URL_IMG', URL_PUBLIC . 'img/');
+define('URL_IMGCAND', URL_PUBLIC . 'img/Candidato/');
 define('URL_JS', URL_PUBLIC . 'js/');

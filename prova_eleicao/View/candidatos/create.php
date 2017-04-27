@@ -19,7 +19,7 @@
           </form>
 
         </nav>
-        <form action="<?= URL_RAIZ . 'candidatos' ?>" method="post">
+        <form action="<?= URL_RAIZ . 'candidatos' ?>" method="POST">
             <div class="form-group">
                 <label for="nome">Nome</label>
                 <input id="nome" name="nome" class="form-control" autofocus>
@@ -27,6 +27,10 @@
             <div class="form-group">
                 <label for="descricao">Descrição</label>
                 <input id="descricao" name="descricao" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="foto">Foto</label>
+                <input id="foto" name="foto" class="form-control" type="file">
             </div>
             <button type="submit" class="btn btn-primary">Cadastrar</button>
         </form>

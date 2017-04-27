@@ -44,9 +44,11 @@ class CandidatoController
     public function store()
     {
         $this->verificarLogado();
+        $foto = array_key_exists('foto', $_FILES) ? $_FILES['foto'] : null;
         $candidato = new Candidato(
             $_POST['nome'],
-            $_POST['descricao']
+            $_POST['descricao'],
+            $foto
         );
         $candidato->save();
         header('Location: ' . URL_RAIZ . 'candidatos');
@@ -56,6 +58,7 @@ class CandidatoController
     public function update($id)
     {
         $this->verificarLogado();
+        $foto = array_key_exists('foto', $_FILES) ? $_FILES['foto'] : null;
         $candidato = Candidato::find($id);
         $candidato->setNome($_POST['nome']);
         $candidato->setDescricao($_POST['descricao']);

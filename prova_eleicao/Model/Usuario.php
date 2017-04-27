@@ -63,6 +63,7 @@ class Usuario
     public function save()
     {
         $this->inserir();
+        //echo "apos inserir";
         $this->salvarImagem();
     }
 
@@ -71,7 +72,11 @@ class Usuario
         $comando = BancoDeDados::prepare(self::INSERIR);
         $comando->bindParam(1, $this->email, PDO::PARAM_STR, 255);
         $comando->bindParam(2, $this->senha, PDO::PARAM_STR, 60);
-        $comando->execute();
+        $deucerto = $comando->execute();
+        //echo "deucerto $deucerto e Email $this->email e sena $this->senha <br>\n";
+        print_r($comando->errorInfo());
+        //echo "<hr>\n";
+        //print_r($comando);
         $this->id = BancoDeDados::getPdo()->lastInsertId();
     }
 

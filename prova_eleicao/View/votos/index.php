@@ -24,11 +24,12 @@
 
         <table class="table table-bordered">
             <thead>
-                <tr class="active">
-                    <th>Nome</th>
-                    <th>Votos</th>
-                    <th class="coluna-botoes"></th>
-                </tr>
+              <tr class="active">
+                  <th>Foto</th>
+                  <th>Nome</th>
+                  <th>Votos</th>
+                  <th class="coluna-botoes"></th>
+              </tr>
             </thead>
             <tbody>
                 <?php if (empty($candidatos)) : ?>
@@ -37,17 +38,18 @@
                     </tr>
                 <?php else : ?>
                     <?php foreach ($candidatos as $candidato) : ?>
-                        <tr>
-                            <td><?= $candidato->getNome() ?></td>
-                            <td id="totalVotos<?= $candidato->getId() ?>"><?= $candidato->getVotos() ?></td>
-                            <td>
-                                <form id="foo" name="foo" action="<?= URL_RAIZ . 'votos' ?>" method="POST" class="form-botao">
-                                    <input type="hidden" name="_metodo" value="PATCH">
-                                    <input type="hidden" name="id" value="<?= $candidato->getId() ?>">
-                                    <button onclick="return eleitorQueVotou(this.id)" id="eleitor<?= $candidato->getId() ?>" name="eleitor" type="button" class="btn btn-xs btn-success" title="Votar" >
-                                        <span class="glyphicon glyphicon-user"></span>
-                                        <span class="glyphicon glyphicon-plus"></span>
-                                    </button>
+                      <tr>
+                        <td><img src="<?= URL_IMGCAND . $candidato->getImagem() ?>" alt="Imagem do perfil" class="imagem-usuario pull-left"></td>
+                          <td><?= $candidato->getNome() ?></td>
+                          <td id="totalVotos<?= $candidato->getId() ?>"><?= $candidato->getVotos() ?></td>
+                          <td>
+                              <form id="foo" name="foo" action="<?= URL_RAIZ . 'votos' ?>" method="POST" class="form-botao">
+                                  <input type="hidden" name="_metodo" value="PATCH">
+                                  <input type="hidden" name="id" value="<?= $candidato->getId() ?>">
+                                  <button onclick="return eleitorQueVotou(this.id)" id="eleitor<?= $candidato->getId() ?>" name="eleitor" type="button" class="btn btn-xs btn-success" title="Votar" >
+                                      <span class="glyphicon glyphicon-user"></span>
+                                      <span class="glyphicon glyphicon-plus"></span>
+                                  </button>
                                 </form>
                             </td>
                         </tr>

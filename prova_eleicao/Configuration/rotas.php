@@ -30,4 +30,13 @@ $rotas = [
         'POST' => '\Controller\LoginController#store',//loga o usuario
         'DELETE' => '\Controller\LoginController#destroy',// Botao sair
     ],
+    '/usuarios/create' => [
+        'GET' => '\Controller\UsuarioController#create',
+    ],
+    '/usuarios' => [
+        'POST' => '\Controller\UsuarioController#store',
+    ],
+    '/usuarios/sucesso' => [
+        'GET' => '\Controller\UsuarioController#sucesso',
+    ],
 ];
